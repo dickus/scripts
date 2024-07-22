@@ -18,4 +18,9 @@ This script renames every hard link related to provided one. Usage:
 
 
 ## gamepad-battery.sh
-This script shows you you gamepad id, name and charge. Simply use ./<path_to_script>.
+This script shows you you gamepad id, name and charge. Usage:
+```bash
+./<path_to_script>
+```
+
+**Dependency**: [upower](https://gitlab.freedesktop.org/upower/upower)
