@@ -15,3 +15,7 @@ This script renames every hard link related to provided one. Usage:
 **<hardlink_path>** — path to any hardlink which mirrors you need to rename. The path may be actual or relative.
 
 **<new_name>** — a new name for all hardlinks.
+
+
+## gamepad-battery.sh
+This script shows you you gamepad id, name and charge. Simply use ./<path_to_script>.
