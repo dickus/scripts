@@ -1,38 +1,53 @@
 #!/bin/bash
 
-INFO=$(upower -e | grep "gip")
-ITEMS=$(echo "$INFO" | wc -l)
-CURRENT_ITEM=1
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-if [[ "$INFO" ]]; then
-    for item in $INFO; do
-        DEVICE_ID=$(echo $item | grep -o "gip[0-9]x[0-9]")
-        MODEL=$(upower -i $item | grep "model")
-        MODEL=$(echo $MODEL | sed "s/model://")
-        DEVICE_NAME=$(echo $MODEL | grep -P "^[^\s]")
-        PERCENT=$(upower -i $item | grep -Eow "[0-9]{2,3}%")
-        LOW_PERCENT=$(echo "$PERCENT" | awk '{print int($1)}')
-    
-        echo -e "\033[1mid:\033[0m \t${DEVICE_ID}"
-        echo -e "\033[1mName:\033[0m \t${DEVICE_NAME}"
+if ! command -v upower &> /dev/null; then
+    echo -e "${RED}Error: upower is not installed${NC}"
 
-        if [[ $LOW_PERCENT -ge 50 ]]; then
-            if [[ "$CURRENT_ITEM" -lt "$ITEMS" ]]; then
-                echo -e "\033[1mCharge:\033[0m ${PERCENT}\n"
-            else
-                echo -e "\033[1mCharge:\033[0m ${PERCENT}"
-            fi
-        else
-            if [[ "$CURRENT_ITEM" -lt "$ITEMS" ]]; then
-                echo -e "\033[1mCharge:\033[0m \033[0;31m${PERCENT}\033[0m\n"
-            else
-                echo -e "\033[1mCharge:\033[0m \033[0;31m${PERCENT}\033[0m"
-            fi
-        fi
-
-        CURRENT_ITEM=$((CURRENT_ITEM + 1))
-    done
-else
-    echo -e "No gamepad connected."
+    exit 1
 fi
 
+readarray -t devices < <(upower -e | grep -iE 'gip|gamepad' | sort -u)
+
+if [[ ${#devices[@]} -eq 0 ]]; then
+    echo -e "${YELLOW}No gamepads connected${NC}"
+
+    exit 0
+fi
+
+for ((i=0; i<${#devices[@]}; i++)); do
+    device="${devices[$i]}"
+
+    model=$(upower -i "$device" | awk -F': ' '/model/ {gsub(/^[ \t]+/, "", $2); print $2}')
+    percent=$(upower -i "$device" | grep -Po 'percentage:\s*\K\d+')
+    device_id=$(grep -Po 'gip[\dXx]+' <<< "$device")
+
+    if [[ $i -ne $((${#devices[@]} -1)) ]]; then
+        sep=$'\n'
+    else
+        sep=""
+    fi
+
+    echo -e "${BLUE}=== Device $((i+1))/${#devices[@]} ===${NC}"
+    echo -e "${GREEN}ID:${NC}\t\t$device_id"
+    echo -e "${GREEN}Name:${NC}\t\t${model:-Unknown}"
+
+    if [[ -n "$percent" ]]; then
+        if [[ $percent -ge 50 ]]; then
+            color=$GREEN
+        elif [[ $percent -ge 20 ]]; then
+            color=$YELLOW
+        else
+            color=$RED
+        fi
+
+        echo -e "${GREEN}Battery:${NC}\t${color}${percent}%${NC}"
+    else
+        echo -e "${GREEN}Battery:${NC}\t${RED}N/A${NC}${sep}"
+    fi
+done
