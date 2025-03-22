@@ -18,7 +18,6 @@ touch "${docs_path}/${drafts_directory}/${formatted_file_name}".md
 cat "${docs_path}/${templates_directory}/note.md" > "${docs_path}/${drafts_directory}/${formatted_file_name}".md
 
 sed -i "s|{{id}}|${formatted_file_name}|" "${docs_path}/${drafts_directory}/${formatted_file_name}".md
-sed -i "s|{{title}}|${file_name}|" "${docs_path}/${drafts_directory}/${formatted_file_name}".md
 
 cd "${docs_path}"
 nvim "${drafts_directory}/${formatted_file_name}".md

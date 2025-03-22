@@ -1,5 +1,5 @@
-### Random scripts
-## mvhlink.sh
+## Random scripts
+### mvhlink.sh
 This script renames every hard link related to provided one. Usage:
 ```bash
 ./mvhlink.sh <where_to_search> <hardlink_path> <new_name>
@@ -15,7 +15,7 @@ This script renames every hard link related to provided one. Usage:
 **<new_name>** — a new name for all hardlinks.
 
 
-## gamepad-battery.sh
+### gamepad-battery.sh
 This script shows you you gamepad id, name and charge. Usage:
 ```bash
 ./<path_to_script>
