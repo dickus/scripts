@@ -1,13 +1,13 @@
 #!/bin/bash
 
-connection=$(ifconfig | grep "vpn")
+CONNECTION=$(ifconfig | grep "vpn")
 
-if [[ -z "$connection" ]]; then
+if [[ -z "$CONNECTION" ]]; then
     wg-quick up .wg/vpn.conf
 
-    connection=$(ifconfig | grep "vpn")
+    CONNECTION=$(ifconfig | grep "vpn")
 
-    if [[ -z "$connection" ]]; then
+    if [[ -z "$CONNECTION" ]]; then
         dunstify -t 2000 -i $HOME/.icons/light/connection_down.svg "VPN" "Connection error"
     else
         dunstify -t 1500 -i $HOME/.icons/light/connection_up.svg "VPN" "Connection up"

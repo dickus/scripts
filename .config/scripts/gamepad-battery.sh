@@ -51,3 +51,4 @@ for ((i=0; i<${#devices[@]}; i++)); do
         echo -e "${GREEN}Battery:${NC}\t${RED}N/A${NC}${sep}"
     fi
 done
+

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-sdc=$(lsblk | grep "sdc")
+SDC=$(lsblk | grep "sdc")
 
-if [[ -z "$sdc" ]]; then
+if [[ -z "$SDC" ]]; then
     df -h / /home
 else
     df -h / /home /mnt
