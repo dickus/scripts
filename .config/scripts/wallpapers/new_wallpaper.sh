@@ -19,7 +19,7 @@ if [[ "$#" -eq 1 ]]; then
         echo -e "A script to add new wallpapers.\n"
 
         echo -e "${BOLD_UNDERLINE}Usage:${NO_FORMAT}  ${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS] [NAME] [URL]"
-        echo -e "\t${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS]"
+        echo -e "\t${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS]\n"
 
         echo -e "${BOLD_UNDERLINE}Arguments:${NO_FORMAT}"
         echo -e "  [NAME]  File name for a new wallpaper."
