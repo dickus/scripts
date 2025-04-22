@@ -6,8 +6,10 @@ NO_FORMAT="\033[0m"
 
 BASE_DIR="$HOME/Pictures/wallpapers"
 
+BASIC_USE="Run ${BOLD}new_wallpaper.sh -h${NO_FORMAT} or ${BOLD}new_wallpaper.sh --help${NO_FORMAT} to see the use of the script."
+
 if [[ "$#" -ne 1 ]] && [[ "$#" -ne 3 ]]; then
-    echo -e "Run ${BOLD}new_wallpaper.sh -h${NO_FORMAT} or ${BOLD}wall --help${NO_FORMAT} to see the use of the script."
+    echo -e ${BASIC_USE}
 
     exit
 fi
@@ -16,7 +18,8 @@ if [[ "$#" -eq 1 ]]; then
     if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
         echo -e "A script to add new wallpapers.\n"
 
-        echo -e "${BOLD_UNDERLINE}Usage:${NO_FORMAT} ${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS] [NAME] [URL]\n"
+        echo -e "${BOLD_UNDERLINE}Usage:${NO_FORMAT}  ${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS] [NAME] [URL]"
+        echo -e "\t${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS]"
 
         echo -e "${BOLD_UNDERLINE}Arguments:${NO_FORMAT}"
         echo -e "  [NAME]  File name for a new wallpaper."
@@ -37,7 +40,7 @@ if [[ "$1" == "-d" ]]; then
 elif [[ "$1" == "-l" ]]; then
     MODE="light"
 else
-    echo -e "Run ${BOLD}new_wallpaper.sh -h${NO_FORMAT} or ${BOLD}new_wallpaper.sh --help${NO_FORMAT} to see the use of the script."
+    echo -e ${BASIC_USE}
 
     exit
 fi
@@ -45,7 +48,7 @@ fi
 if [[ "$3" == http://* || "$3" == https://* ]]; then
     URL="$3"
 else
-    echo -e "Run ${BOLD}new_wallpaper.sh -h${NO_FORMAT} or ${BOLD}new_wallpaper.sh --help${NO_FORMAT} to see the use of the script."
+    echo -e ${BASIC_USE}
 
     exit
 fi
