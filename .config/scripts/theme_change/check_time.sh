@@ -10,18 +10,14 @@ MORNING_TIME=800
 THEME_SCRIPT="$HOME/.config/scripts/theme_change/theme_schedule.sh"
 
 
-main() {
-    if (( 10#$CURRENT_TIME >= 1930 || 10#$CURRENT_TIME < 800 )); then
-        DESIRED_THEME="dark"
-    else
-        DESIRED_THEME="light"
-    fi
+if (( 10#$CURRENT_TIME >= 1930 || 10#$CURRENT_TIME < 800 )); then
+    DESIRED_THEME="dark"
+else
+    DESIRED_THEME="light"
+fi
 
-    if [[ "$CURRENT_THEME" != "$DESIRED_THEME" ]]; then
-        "$THEME_SCRIPT" "$DESIRED_THEME"
-        sed -i 's|bat --theme .*"|bat --theme gruvbox-${DESIRED_THEME}"|' $HOME/.zshrc
-    fi
-}
-
-main
+if [[ "$CURRENT_THEME" != "$DESIRED_THEME" ]]; then
+    "$THEME_SCRIPT" "$DESIRED_THEME"
+    sed -i 's|bat --theme .*"|bat --theme gruvbox-${DESIRED_THEME}"|' $HOME/.zshrc
+fi
 
