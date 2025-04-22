@@ -4,33 +4,45 @@ THEME="$1"
 LIGHT_THEME="latte"
 DARK_THEME="frappe"
 
-case $THEME in
-    light)
-        sed -i "s|/themes/.*.toml|/themes/$LIGHT_THEME.toml|" $HOME/.config/alacritty/alacritty.toml
-        sed -i "s|/themes/.*.sh|/themes/$LIGHT_THEME.sh|" $HOME/.config/bspwm/bspwmrc
-        sed -i "s|themes/.*.conf|themes/$LIGHT_THEME.conf|" $HOME/.config/kitty/kitty.conf
-        sed -i "s|themes.*|themes.$LIGHT_THEME\")|" $HOME/.config/nvim/init.lua
-        sed -i "s|/themes/.*.ini|/themes/$LIGHT_THEME.ini|" $HOME/.config/polybar/config.ini
-        sed -i "s|/themes/.*.rasi|/themes/$LIGHT_THEME.rasi|" $HOME/.config/rofi/config.rasi
-        sed -i "s|/themes/.*.rasi|/themes/$LIGHT_THEME.rasi|" $HOME/.config/rofi/powermenu.rasi
-        sed -i "s|theme .*|theme \"$LIGHT_THEME\"|" $HOME/.config/zellij/config.kdl
-        sed -i "s|/dark/|/light/|" $HOME/.config/scripts/microphone.sh
-        sed -i "s|/dark/|/light/|" $HOME/.config/scripts/volume.sh
-        sed -i "s|/dark/|/light/|" $HOME/.config/scripts/vpn.sh
-        sed -i "s|/dark/|/light/|" $HOME/.config/scripts/screenshoter.sh ;;
+CONFIG_DIR="$HOME/.config"
 
-    dark)
-        sed -i "s|/themes/.*.toml|/themes/$DARK_THEME.toml|" $HOME/.config/alacritty/alacritty.toml
-        sed -i "s|/themes/.*.sh|/themes/$DARK_THEME.sh|" $HOME/.config/bspwm/bspwmrc
-        sed -i "s|themes/.*.conf|themes/$DARK_THEME.conf|" $HOME/.config/kitty/kitty.conf
-	sed -i "s|themes.*|themes.$DARK_THEME\")|" $HOME/.config/nvim/init.lua
-        sed -i "s|/themes/.*.ini|/themes/$DARK_THEME.ini|" $HOME/.config/polybar/config.ini
-        sed -i "s|/themes/.*.rasi|/themes/$DARK_THEME.rasi|" $HOME/.config/rofi/config.rasi
-        sed -i "s|/themes/.*.rasi|/themes/$DARK_THEME.rasi|" $HOME/.config/rofi/powermenu.rasi
-        sed -i "s|theme .*|theme \"$DARK_THEME\"|" $HOME/.config/zellij/config.kdl
-        sed -i "s|/light/|/dark/|" $HOME/.config/scripts/microphone.sh
-        sed -i "s|/light/|/dark/|" $HOME/.config/scripts/volume.sh
-        sed -i "s|/light/|/dark/|" $HOME/.config/scripts/vpn.sh
-        sed -i "s|/light/|/dark/|" $HOME/.config/scripts/screenshoter.sh ;;
-esac
+TARGET_THEME="$LIGHT_THEME"
+DIR_MODE="light"
+
+if [[ "$THEME" == "dark" ]]; then
+    TARGET_THEME="$DARK_THEME"
+    DIR_MODE="dark"
+fi
+
+declare -A replacements=(
+    ["$CONFIG_DIR/alacritty/alacritty.toml"]="s|/themes/.*.toml|/themes/$TARGET_THEME.toml|"
+    ["$CONFIG_DIR/bspwm/bspwmrc"]="s|/themes/.*.sh|/themes/$TARGET_THEME.sh|"
+    ["$CONFIG_DIR/kitty/kitty.conf"]="s|themes/.*.conf|themes/$TARGET_THEME.conf|"
+    ["$CONFIG_DIR/nvim/init.lua"]="s|themes.*|themes.$TARGET_THEME\")|"
+    ["$CONFIG_DIR/polybar/config.ini"]="s|/themes/.*.ini|/themes/$TARGET_THEME.ini|"
+    ["$CONFIG_DIR/rofi/config.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
+    ["$CONFIG_DIR/rofi/powermenu.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
+    ["$CONFIG_DIR/zellij/config.kdl"]="s|theme .*|themes \"$TARGET_THEME\"|"
+)
+
+for file in "${!replacements[@]}"; do
+    if [[ -f "$file" ]]; then
+        sed -i "${replacements[$file]}" "$file"
+    fi
+done
+
+scripts=(
+    microphone.sh
+    volume.sh
+    vpn.sh
+    screenshoter.sh
+)
+
+for script in "${scripts[@]}"; do
+    file="$CONFIG_DIR/scripts/$script"
+
+    if [[ -f "$file" ]]; then
+        sed -i "s|/light/|/$DIR_MODE/|g; s|/dark/|/$DIR_MODE/|g" "$file"
+    fi
+done
 

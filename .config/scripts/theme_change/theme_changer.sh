@@ -1,106 +1,112 @@
 #!/bin/bash
 
 BOLD="\033[1m"
-BOLD_UNDERLINE="\033[1m\033[4m"
+BOLD_UNDERLINE="\033[1;4m"
 NO_FORMAT="\033[0m"
-
-LIGHT="$1"
-DARK="$2"
 
 LIGHT_THEMES=("everforest" "gruvbox" "latte")
 DARK_THEMES=("frappe" "gruvbox" "nord")
 
-MAX_LENGTH=$(( ${#LIGHT_THEMES[@]} > ${#DARK_THEMES[@]} ? ${#LIGHT_THEMES[@]} : ${#DARK_THEMES[@]} ))
+THEME_SCRIPT="$HOME/.config/scripts/theme_change/theme_schedule.sh"
 
-CURRENT_LIGHT="$(cat $HOME/.config/scripts/theme_change/theme_schedule.sh | grep -oP 'light_theme="\K[^"]+' | head -n 1)"
-CURRENT_DARK="$(cat $HOME/.config/scripts/theme_change/theme_schedule.sh | grep -oP 'dark_theme="\K[^"]+' | tail -n 1)"
+get_current_theme() {
+    grep -oP "$1=\"\K[^\"]+" "$THEME_SCRIPT" | tail -n 1
+}
 
+CURRENT_LIGHT=$(get_current_theme "LIGHT_THEME")
+CURRENT_DARK=$(get_current_theme "DARK_THEME")
 
-for THEME_INDEX in "${!LIGHT_THEMES[@]}"; do
-    THEME="${LIGHT_THEMES[$THEME_INDEX]}"
-    if [[ "$CURRENT_LIGHT" == *"$THEME"* ]]; then
-        LIGHT_THEMES[$THEME_INDEX]="* $THEME"
-    fi
-done
+mark_current_themes() {
+    local -n arr=$1
+    local current=$2
 
-for THEME_INDEX in "${!DARK_THEMES[@]}"; do
-    THEME="${DARK_THEMES[$THEME_INDEX]}"
-    if [[ "$CURRENT_DARK" == *"$THEME"* ]]; then
-        DARK_THEMES[$THEME_INDEX]="* $THEME"
-    fi
-done
+    for i in "${!arr[@]}"; do
+        if [[ "${arr[i]}" == "$current" ]]; then
+            arr[i]="${arr[i]} <"
+        fi
+    done
+}
 
+mark_current_themes LIGHT_THEMES "$CURRENT_LIGHT"
+mark_current_themes DARK_THEMES "$CURRENT_DARK"
 
-if [[ "$#" -ne 1 ]] && [[ "$#" -ne 2 ]]; then
+if [[ $# -eq 0 ]]; then
     echo -e "Run ${BOLD}theme_changer.sh -h${NO_FORMAT} or ${BOLD}--help${NO_FORMAT} to see the use of the script."
-
-    exit
 fi
 
-if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
-    echo -e "A script to change themes.\n"
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            echo -e "A script to change themes.\n"
 
-    echo -e "${BOLD_UNDERLINE}Usage:${NO_FORMAT} ${BOLD}theme_changer.sh${NO_FORMAT} [LIGHT THEME] [DARK THEME]"
+            echo -e "${BOLD_UNDERLINE}Usage:${NO_FORMAT}  ${BOLD}theme_changer.sh${NO_FORMAT} [LIGHT THEME] [DARK THEME]"
+            echo -e "\t${BOLD}theme_changer.sh${NO_FORMAT} [OPTIONS]\n"
 
-    echo -e "${BOLD_UNDERLINE}Arguments:${NO_FORMAT}"
-    echo -e "  [LIGHT THEME]  Set light theme."
-    echo -e "  [DARK THEME]   Set dark theme.\n"
+            echo -e "${BOLD_UNDERLINE}Arguments:${NO_FORMAT}"
+            echo -e "  [LIGHT THEME]  Set light theme."
+            echo -e "  [DARK THEME]   Set dark theme.\n"
 
-    echo -e "${BOLD_UNDERLINE}Options:${NO_FORMAT}"
-    echo -e "  ${BOLD}-h${NO_FORMAT}, ${BOLD}--help${NO_FORMAT}"
-    echo -e "  \tPrint help."
-    echo -e "  ${BOLD}-t${NO_FORMAT}, ${BOLD}--theme${NO_FORMAT}"
-    echo -e "  \tShow current themes."
+            echo -e "${BOLD_UNDERLINE}Options:${NO_FORMAT}"
+            echo -e "  ${BOLD}-h${NO_FORMAT}, ${BOLD}--help${NO_FORMAT}"
+            echo -e "  \tPrint help."
+            echo -e "  ${BOLD}-t${NO_FORMAT}, ${BOLD}--theme${NO_FORMAT}"
+            echo -e "  \tShow current themes."
 
-    exit
+            exit ;;
+        -t|--theme)
+            echo -e "${BOLD_UNDERLINE}Themes:${NO_FORMAT}"
+            printf "${BOLD}%-15s %s${NO_FORMAT}\n" "Light themes" "Dark themes"
+            max_len=$((${#LIGHT_THEMES[@]} > ${#DARK_THEMES[@]} ? ${#LIGHT_THEMES[@]} : ${#DARK_THEMES[@]}))
+
+            for (( i = 0; i < max_len; i++ )); do
+                printf "%-15s %s\n" "${LIGHT_THEMES[i]:-}" "${DARK_THEMES[i]:-}"
+            done
+
+            exit ;;
+        *)
+            break ;;
+    esac
+done
+
+if [[ $# -ne 2 ]]; then
+    echo -e "Run ${BOLD}theme_changer.sh -h${NO_FORMAT} or ${BOLD}--help${NO_FORMAT} to see the use of the script."
 fi
 
-if [[ "$1" == "-t" ]] || [[ "$1" == "--theme" ]]; then
-    echo -e "${BOLD_UNDERLINE}Current themes:${NO_FORMAT}"
-    printf "${BOLD}%-15s %s${NO_FORMAT}\n" "Light themes" "Dark themes"
+LIGHT=$1
+DARK=$2
 
-    for ((i = 0; i < MAX_LENGTH; i++)); do
-        light_list=${LIGHT_THEMES[i]:-}
-        dark_list=${DARK_THEMES[i]:-}
+validate_theme() {
+    local theme=$1
+    shift
+    local -n themes=$1
 
-        printf "  %-15s %s\n" "$light_list" "$dark_list"
+    for t in "${themes[@]}"; do
+        if [[ "$t" == "$theme" ]]; then
+            return 0
+        fi
     done
 
-    exit
-fi
+    echo -e "${BOLD}Error:${NO_FORMAT} '$theme' is not found."
 
+    return 1
+}
 
-if ! [[ "${LIGHT_THEMES[@]}" =~ "$LIGHT" ]] || ! [[ "${DARK_THEMES[@]}" =~ "$DARK" ]]; then
-    echo "Incorrect themes input."
-    echo -e "Run ${BOLD}theme_changer.sh${NO_FORMAT} with no arguments to see how to use it."
+validate_theme "$LIGHT" LIGHT_THEMES || exit 1
+validate_theme "$DARK" DARK_THEMES || exit 1
 
-    exit
-elif ! [[ "${LIGHT_THEMES[@]}" =~ "$LIGHT" ]]; then
-    echo "Incorrect light theme input."
-    echo -e "Run ${BOLD}theme_changer.sh${NO_FORMAT} with no arguments to see how to use it."
+update_theme() {
+    local var_name=$1
+    local new_value=$2
+    local current_value=$3
 
-    exit
-elif ! [[ "${DARK_THEMES[@]}" =~ "$DARK" ]]; then
-    echo "Incorrect dark theme input."
-    echo -e "Run ${BOLD}theme_changer.sh${NO_FORMAT} with no arguments to see how to use it."
+    if [[ "$current_value" != "$new_value" ]]; then
+        sed -i "s/^\($var_name=\).*/\1\"$new_value\"/" "$THEME_SCRIPT"
+        echo -e "Theme $var_name changed to ${BOLD}'$new_value'${NO_FORMAT}."
+    else
+        echo -e "Theme is already set to ${BOLD}'$new_value'${NO_FORMAT}"
+    fi
+}
 
-    exit
-fi
-
-
-if [[ "$CURRENT_LIGHT" != "$LIGHT" ]]; then
-    sed -i "s|^light_theme=.*|light_theme=\"$LIGHT\"|" $HOME/.config/scripts/theme_change/theme_schedule.sh
-
-    echo -e "Light theme is changed to ${BOLD}'$LIGHT'${NO_FORMAT}."
-else
-    echo -e "Light theme is already set to ${BOLD}'$LIGHT'${NO_FORMAT}."
-fi
-
-if [[ "$CURRENT_DARK" != "$DARK" ]]; then
-    sed -i "s|^dark_theme=.*|dark_theme=\"$DARK\"|" $HOME/.config/scripts/theme_change/theme_schedule.sh
-
-    echo -e "Dark theme is changed to ${BOLD}'$DARK'${NO_FORMAT}."
-else
-    echo -e "Dark theme is already set to ${BOLD}'$DARK'${NO_FORMAT}."
-fi
+update_theme "light_theme" "$LIGHT" "$CURRENT_LIGHT"
+update_theme "dark_theme" "$DARK" "$CURRENT_DARK"
 
