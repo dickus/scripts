@@ -22,7 +22,6 @@ declare -A replacements=(
     ["$CONFIG_DIR/polybar/config.ini"]="s|/themes/.*.ini|/themes/$TARGET_THEME.ini|"
     ["$CONFIG_DIR/rofi/config.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
     ["$CONFIG_DIR/rofi/powermenu.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
-    ["$CONFIG_DIR/zellij/config.kdl"]="s|theme .*|themes \"$TARGET_THEME\"|"
 )
 
 for file in "${!replacements[@]}"; do
