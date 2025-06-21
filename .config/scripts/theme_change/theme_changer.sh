@@ -30,8 +30,9 @@ mark_current_themes() {
 mark_current_themes LIGHT_THEMES "$CURRENT_LIGHT"
 mark_current_themes DARK_THEMES "$CURRENT_DARK"
 
-if [[ $# -eq 0 ]]; then
+if [[ $# -eq 0 ]] || [[ $# -ne 2 ]]; then
     echo -e "Run ${BOLD}theme_changer.sh -h${NO_FORMAT} or ${BOLD}--help${NO_FORMAT} to see the use of the script."
+    exit 0
 fi
 
 while [[ $# -gt 0 ]]; do
@@ -67,10 +68,6 @@ while [[ $# -gt 0 ]]; do
             break ;;
     esac
 done
-
-if [[ $# -ne 2 ]]; then
-    echo -e "Run ${BOLD}theme_changer.sh -h${NO_FORMAT} or ${BOLD}--help${NO_FORMAT} to see the use of the script."
-fi
 
 LIGHT=$1
 DARK=$2
