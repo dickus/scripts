@@ -53,9 +53,20 @@ else
     exit
 fi
 
+FILENAME="$2"
+if [[ ! "$FILENAME" =~ \.(png|jpg|jpeg)$ ]]; then
+    CLEAN_URL="${URL%%\?*}"
+    EXTENSION="${CLEAN_URL##*.}"
+    EXTENSION_LOWER="${EXTENSION,,}"
+
+    if [[ "$EXTENSION_LOWER" =~ ^(png|jpg|jpeg)$ ]]; then
+        FILENAME="${FILENAME}.${EXTENSION_LOWER}"
+    fi
+fi
+
 if ! [[ -d "$BASE_DIR/$MODE" ]]; then
     mkdir -p "$BASE_DIR/$MODE"
 fi
 
-curl -o "$BASE_DIR/$MODE/$2" "$URL"
+curl -o "$BASE_DIR/$MODE/$FILENAME" "$URL"
 
