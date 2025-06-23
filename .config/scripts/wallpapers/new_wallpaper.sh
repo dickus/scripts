@@ -1,72 +1,87 @@
 #!/bin/bash
 
 BOLD="\033[1m"
-BOLD_UNDERLINE="\033[1m\033[4m"
 NO_FORMAT="\033[0m"
 
 BASE_DIR="$HOME/Pictures/wallpapers"
 
-BASIC_USE="Run ${BOLD}new_wallpaper.sh -h${NO_FORMAT} or ${BOLD}new_wallpaper.sh --help${NO_FORMAT} to see the use of the script."
-
-if [[ "$#" -ne 1 ]] && [[ "$#" -ne 3 ]]; then
-    echo -e ${BASIC_USE}
-
-    exit
-fi
-
-if [[ "$#" -eq 1 ]]; then
-    if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
-        echo -e "A script to add new wallpapers.\n"
-
-        echo -e "${BOLD_UNDERLINE}Usage:${NO_FORMAT}  ${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS] [NAME] [URL]"
-        echo -e "\t${BOLD}new_wallpaper.sh${NO_FORMAT} [OPTIONS]\n"
-
-        echo -e "${BOLD_UNDERLINE}Arguments:${NO_FORMAT}"
-        echo -e "  [NAME]  File name for a new wallpaper."
-        echo -e "  [URL]   Link to an image needed to be added as a wallpaper.\n"
-
-        echo -e "${BOLD_UNDERLINE}Options:${NO_FORMAT}"
-        echo -e "  ${BOLD}-h${NO_FORMAT}, ${BOLD}--help${NO_FORMAT}"
-        echo -e "  \tPrint help."
-        echo -e "  ${BOLD}-d${NO_FORMAT}, ${BOLD}-l${NO_FORMAT}"
-        echo -e "  \tSet new wallpaper as ${BOLD}d${NO_FORMAT}ark or ${BOLD}l${NO_FORMAT}ight."
-
-        exit
+show_error() {
+    message="$1"
+    if command -v dunstify &> /dev/null; then
+        dunstify -t 2000 -i $HOME/.icons/light/gallery_error.svg "Error" "$message"
+    else
+        echo -e "${BOLD}Error:${NO_FORMAT} $message" >&2
     fi
-fi
 
-if [[ "$1" == "-d" ]]; then
-    MODE="dark"
-elif [[ "$1" == "-l" ]]; then
-    MODE="light"
-else
-    echo -e ${BASIC_USE}
+    exit 1
+}
 
-    exit
-fi
+download_wallpaper() {
+    local mode="$1"
+    local filename="$2"
+    local url="$3"
+    
+    [[ "$mode" != "dark" && "$mode" != "light" ]] && exit 1
 
-if [[ "$3" == http://* || "$3" == https://* ]]; then
-    URL="$3"
-else
-    echo -e ${BASIC_USE}
+    [[ ! "$url" =~ ^https?:// ]] && show_error "Invalid URL"
 
-    exit
-fi
-
-FILENAME="$2"
-if [[ ! "$FILENAME" =~ \.(png|jpg|jpeg)$ ]]; then
-    CLEAN_URL="${URL%%\?*}"
-    EXTENSION="${CLEAN_URL##*.}"
-    EXTENSION_LOWER="${EXTENSION,,}"
-
-    if [[ "$EXTENSION_LOWER" =~ ^(png|jpg|jpeg)$ ]]; then
-        FILENAME="${FILENAME}.${EXTENSION_LOWER}"
+    if [[ ! "$filename" =~ \.(png|jpg|jpeg)$ ]]; then
+        clean_url="${url%%\?*}"
+        extension="${clean_url##*.}"
+        extension_lower="${extension,,}"
+        
+        [[ "$extension_lower" =~ ^(png|jpg|jpeg)$ ]] && filename="${filename}.${extension_lower}"
     fi
+
+    target_dir="$BASE_DIR/$mode"
+    mkdir -p "$target_dir"
+
+    if ! curl -L -f -o "$target_dir/$filename" "$url"; then
+        show_error "Couldn't download an image: $url"
+    fi
+
+    if command -v dunstify &> /dev/null; then
+        dunstify -t 1000 -i $HOME/.icons/light/gallery.svg "New $mode wallpaper" "$filename"
+    fi
+}
+
+command -v rofi >/dev/null || show_error "'rofi' is required"
+command -v xclip >/dev/null || show_error "'xclip' is required"
+
+clipboard_content=$(xclip -sel clipboard -o 2>/dev/null)
+[[ -z "$clipboard_content" ]] && show_error "Clipboard is empty"
+
+if [[ "$clipboard_content" =~ ^https?:// ]]; then
+    url="$clipboard_content"
 fi
 
-if ! [[ -d "$BASE_DIR/$MODE" ]]; then
-    mkdir -p "$BASE_DIR/$MODE"
+mode=$(echo -e "☀️ light\n🌙 dark" | rofi -dmenu \
+    -p "Mode:" \
+    -mesg "$url_message" \
+    -theme-str "window { width: 10%; }" \
+    -theme-str "listview { lines: 2; }")
+
+mode=$(echo "$mode" | awk '{print $NF}')
+[[ -z "$mode" ]] && exit 0
+
+target_dir="$BASE_DIR/$mode"
+mkdir -p "$target_dir"
+
+existing_files=()
+if [[ -d "$target_dir" ]]; then
+    while IFS= read -r file; do
+        existing_files+=("$file")
+    done < <(find "$target_dir" -maxdepth 1 -type f -printf "%f\n")
 fi
 
-curl -o "$BASE_DIR/$MODE/$FILENAME" "$URL"
+filename=$(printf "%s\n" "${existing_files[@]}" | rofi -dmenu \
+    -p "Name:" \
+    -theme-str "window { width: 25%; }" \
+    -theme-str "listview { lines: 5; columns: 2; }")
+
+[[ -z "$filename" ]] && exit 0
+
+filename="${filename%.*}"
+
+download_wallpaper "$mode" "$filename" "$url"
 
