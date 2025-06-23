@@ -35,23 +35,13 @@ scripts=(
     microphone.sh
     volume.sh
     vpn.sh
+    yazi/isomount.sh
+    yazi/isounmount.sh
+    wallpapers/new_wallpaper.sh
 )
 
 for script in "${scripts[@]}"; do
     file="$CONFIG_DIR/scripts/$script"
-
-    if [[ -f "$file" ]]; then
-        sed -i "s|/light/|/$DIR_MODE/|g; s|/dark/|/$DIR_MODE/|g" "$file"
-    fi
-done
-
-yazi_scripts=(
-    isomount.sh
-    isounmount.sh
-)
-
-for script in "${yazi_scripts[@]}"; do
-    file="$CONFIG_DIR/scripts/yazi/$script"
 
     if [[ -f "$file" ]]; then
         sed -i "s|/light/|/$DIR_MODE/|g; s|/dark/|/$DIR_MODE/|g" "$file"
