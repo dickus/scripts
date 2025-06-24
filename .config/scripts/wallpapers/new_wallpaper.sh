@@ -8,7 +8,7 @@ BASE_DIR="$HOME/Pictures/wallpapers"
 show_error() {
     message="$1"
     if command -v dunstify &> /dev/null; then
-        dunstify -t 2000 -i $HOME/.icons/light/gallery_error.svg "Error" "$message"
+        dunstify -u critical -t 3000 -i $HOME/.icons/light/gallery_error.svg "Error" "$message"
     else
         echo -e "${BOLD}Error:${NO_FORMAT} $message" >&2
     fi
@@ -41,12 +41,13 @@ download_wallpaper() {
     fi
 
     if command -v dunstify &> /dev/null; then
-        dunstify -t 1000 -i $HOME/.icons/light/gallery.svg "New $mode wallpaper" "$filename"
+        dunstify -t 1500 -i $HOME/.icons/light/gallery.svg "New $mode wallpaper" "$filename"
     fi
 }
 
 command -v rofi >/dev/null || show_error "'rofi' is required"
 command -v xclip >/dev/null || show_error "'xclip' is required"
+command -v dunst >/dev/null || show_error "'dunst' is recommended"
 
 clipboard_content=$(xclip -sel clipboard -o 2>/dev/null)
 [[ -z "$clipboard_content" ]] && show_error "Clipboard is empty"
@@ -59,7 +60,8 @@ mode=$(echo -e "☀️ light\n🌙 dark" | rofi -dmenu \
     -p "Mode:" \
     -mesg "$url_message" \
     -theme-str "window { width: 10%; }" \
-    -theme-str "listview { lines: 2; }")
+    -theme-str "listview { lines: 2; }"
+)
 
 mode=$(echo "$mode" | awk '{print $NF}')
 [[ -z "$mode" ]] && exit 0
@@ -77,7 +79,8 @@ fi
 filename=$(printf "%s\n" "${existing_files[@]}" | rofi -dmenu \
     -p "Name:" \
     -theme-str "window { width: 25%; }" \
-    -theme-str "listview { lines: 5; columns: 2; }")
+    -theme-str "listview { lines: 5; columns: 2; }"
+)
 
 [[ -z "$filename" ]] && exit 0
 
