@@ -10,5 +10,5 @@ case "$1" in
         import ~/Pictures/"$FILE" && xclip -sel clip -t image/png -i ~/Pictures/"$FILE" ;;
 esac
 
-dunstify -t 2000 -i $HOME/Pictures/"$FILE" "Screenshot saved" "$FILE"
+dunstify -t 3000 -i $HOME/Pictures/"$FILE" "Screenshot saved" "$FILE"
 

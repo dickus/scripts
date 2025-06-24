@@ -16,7 +16,7 @@ mkdir -p "$MOUNT_DIR"
 cleanup
 
 if fuseiso -p "$ISO" "$MOUNT_DIR"; then
-    dunstify -t 1000 -i $HOME/.icons/light/disc.svg "ISO mounted" "$(basename "$ISO")"
+    dunstify -t 3000 -i $HOME/.icons/light/disc.svg "ISO mounted" "$(basename "$ISO")"
 else
     cleanup
 
