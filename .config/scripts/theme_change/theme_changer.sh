@@ -30,7 +30,7 @@ mark_current_themes() {
 mark_current_themes LIGHT_THEMES "$CURRENT_LIGHT"
 mark_current_themes DARK_THEMES "$CURRENT_DARK"
 
-if [[ $# -eq 0 ]] || [[ $# -ne 2 ]]; then
+if [[ $# -eq 0 ]]; then
     echo -e "Run ${BOLD}theme_changer.sh -h${NO_FORMAT} or ${BOLD}--help${NO_FORMAT} to see the use of the script."
     exit 0
 fi
@@ -97,13 +97,24 @@ update_theme() {
     local current_value=$3
 
     if [[ "$current_value" != "$new_value" ]]; then
-        sed -i "s/^\($var_name=\).*/\1\"$new_value\"/" "$THEME_SCRIPT"
-        echo -e "Theme $var_name changed to ${BOLD}'$new_value'${NO_FORMAT}."
+        sed -i "s|^\($var_name=\).*|\1\"$new_value\"|" "$THEME_SCRIPT"
+        echo -e "$current_value changed to ${BOLD}'$new_value'${NO_FORMAT}."
     else
         echo -e "Theme is already set to ${BOLD}'$new_value'${NO_FORMAT}"
     fi
 }
 
-update_theme "light_theme" "$LIGHT" "$CURRENT_LIGHT"
-update_theme "dark_theme" "$DARK" "$CURRENT_DARK"
+if [[ $LIGHT == "gruvbox" ]]; then
+    update_theme "LIGHT_THEME" "$LIGHT-light" "$CURRENT_LIGHT"
+else
+    update_theme "LIGHT_THEME" "$LIGHT" "$CURRENT_LIGHT"
+fi
+
+if [[ $DARK == "gruvbox" ]]; then
+    update_theme "DARK_THEME" "$DARK-dark" "$CURRENT_DARK"
+else
+    update_theme "DARK_THEME" "$DARK" "$CURRENT_DARK"
+fi
+
+$HOME/.config/scripts/theme_change/check_time.sh
 
