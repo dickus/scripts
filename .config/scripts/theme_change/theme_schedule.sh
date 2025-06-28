@@ -17,12 +17,14 @@ fi
 declare -A replacements=(
     ["$CONFIG_DIR/alacritty/alacritty.toml"]="s|/themes/.*.toml|/themes/$TARGET_THEME.toml|"
     ["$CONFIG_DIR/bspwm/bspwmrc"]="s|/themes/.*.sh|/themes/$TARGET_THEME.sh|"
+    ["$CONFIG_DIR/hypr/hyprland.conf"]="s|/dunstrc_.*|/dunstrc_$TARGET_THEME| ; s|/themes/.*.conf|/themes/$TARGET_THEME.conf|"
+    ["$CONFIG_DIR/hypr/hyprlock.conf"]="s|themes/.*.conf|themes/$TARGET_THEME.conf|"
     ["$CONFIG_DIR/kitty/kitty.conf"]="s|themes/.*.conf|themes/$TARGET_THEME.conf|"
     ["$CONFIG_DIR/nvim/init.lua"]="s|themes.*|themes.$TARGET_THEME\")|"
     ["$CONFIG_DIR/polybar/config.ini"]="s|/themes/.*.ini|/themes/$TARGET_THEME.ini|"
     ["$CONFIG_DIR/rofi/config.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
     ["$CONFIG_DIR/rofi/powermenu.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
-    ["$HOME/.zshrc"]="s|gruvbox-.*|gruvbox-${DIR_MODE}\"|"
+    ["$HOME/.zshrc"]="s|latte-.*|frappe-${DIR_MODE}\"|"
 )
 
 for file in "${!replacements[@]}"; do
@@ -32,12 +34,12 @@ for file in "${!replacements[@]}"; do
 done
 
 scripts=(
-    microphone.sh
-    volume.sh
-    vpn.sh
+    system/microphone.sh
+    system/volume.sh
+    system/vpn.sh
+    wallpapers/new_wallpaper.sh
     yazi/isomount.sh
     yazi/isounmount.sh
-    wallpapers/new_wallpaper.sh
 )
 
 for script in "${scripts[@]}"; do
@@ -47,4 +49,10 @@ for script in "${scripts[@]}"; do
         sed -i "s|/light/|/$DIR_MODE/|g; s|/dark/|/$DIR_MODE/|g" "$file"
     fi
 done
+
+cat "$CONFIG_DIR/waybar/themes/$TARGET_THEME.css" > "$CONFIG_DIR/waybar/style.css"
+
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    hyprctl reload
+fi
 
