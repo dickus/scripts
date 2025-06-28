@@ -1,14 +1,28 @@
 #!/bin/bash
 
 FILE="screen_$(date +%F_%H%M%S)".png
+SCREEN_DIR="$HOME/Pictures"
 
-case "$1" in
-    screen)
-        import -window root ~/Pictures/"$FILE" && xclip -sel clip -t image/png -i ~/Pictures/"$FILE" ;;
+if [[ "$XDG_SESSION_TYPE" = "wayland" ]]; then
+    CLIP="wl-copy --type=image/png"
 
-    region)
-        import ~/Pictures/"$FILE" && xclip -sel clip -t image/png -i ~/Pictures/"$FILE" ;;
-esac
+    case "$1" in
+        screen)
+            grim "$SCREEN_DIR/$FILE" && $CLIP < "$SCREEN_DIR/$FILE" ;;
+        region)
+            grim -g "$(slurp)" "$SCREEN_DIR/$FILE" && $CLIP < "$SCREEN_DIR/$FILE" ;;
+    esac
+else
+    CLIP="xclip -sel clip -t image/png -i"
 
-dunstify -t 3000 -i $HOME/Pictures/"$FILE" "Screenshot saved" "$FILE"
+    case "$1" in
+        screen)
+            import -window root "$SCREEN_DIR/$FILE" && $CLIP "$SCREEN_DIR/$FILE" ;;
+
+        region)
+            import "$SCREEN_DIR/$FILE" && $CLIP "$SCREEN_DIR/$FILE" ;;
+    esac
+fi
+
+dunstify -t 3000 -i "$SCREEN_DIR/$FILE" "Screenshot saved" "$FILE"
 

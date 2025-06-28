@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DISPLAY=:0.0
+WALLPAPER_DIR="$HOME/Pictures/wallpapers"
 
 CURRENT_HOUR=$(date +%H)
 CURRENT_MINUTE=$(date +%M)
@@ -12,5 +12,21 @@ else
     MODE="dark"
 fi
 
-feh --bg-fill --randomize ~/Pictures/wallpapers/$MODE
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    export SWWW_TRANSITION_FPS=60
+    export SWWW_TRANSITION_STEP=2
+    export SWWW_TRANSITION_TYPE=simple
+
+    mapfile -d '' files < <(find "$WALLPAPER_DIR/$MODE" -type f -print0)
+
+    random_img=$(( RANDOM % ${#files[@]} ))
+
+    swww img "${files[$random_img]}"
+
+    sed -i "s|/wallpapers/.*|${files[$random_img]#*Pictures}|" $HOME/.config/hypr/hyprlock.conf
+else
+    export DISPLAY=:0.0
+
+    feh --bg-fill --randomize $WALLPAPER_DIR/$MODE
+fi
 

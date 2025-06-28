@@ -1,6 +1,5 @@
 #!/bin/bash
 
-CURRENT_THEME="$(cat $HOME/.config/scripts/microphone.sh | grep -oP 'icons/.*/' | head -n 1 | sed 's|icons/\([^/]*\)/|\1|')"
 DESIRED_THEME=""
 
 CURRENT_TIME=$(date +%-H%M)
@@ -12,12 +11,17 @@ THEME_SCRIPT="$HOME/.config/scripts/theme_change/theme_schedule.sh"
 
 if (( 10#$CURRENT_TIME >= 1930 || 10#$CURRENT_TIME < 800 )); then
     DESIRED_THEME="dark"
+
+    if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+        hyprctl hyprsunset temperature 5000
+    fi
 else
     DESIRED_THEME="light"
+
+    if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+        hyprctl hyprsunset temperature reload
+    fi
 fi
 
-if [[ "$CURRENT_THEME" != "$DESIRED_THEME" ]]; then
-    "$THEME_SCRIPT" "$DESIRED_THEME"
-    sed -i 's|bat --theme .*"|bat --theme gruvbox-${DESIRED_THEME}"|' $HOME/.zshrc
-fi
+$THEME_SCRIPT $DESIRED_THEME
 
