@@ -5,7 +5,7 @@ BASE_DIR="$HOME/.wg"
 up() {
     CONNECTION=$(ifconfig | grep "vpn")
 
-    ! [[ -z "$CONNECTION" ]] && dunstify -u critical -t 3000 -i $HOME/.icons/dark/connection_down.svg "VPN" "Already connected" && exit 1
+    ! [[ -z "$CONNECTION" ]] && dunstify -u critical -t 3000 -i $HOME/.icons/light/connection_down.svg "VPN" "Already connected" && exit 1
 
     existing_files=()
     if [[ -d "$BASE_DIR" ]]; then
@@ -26,14 +26,14 @@ up() {
 
     filename=$(echo "$filename" | sed 's|^/||; s|\.conf$||')
 
-    dunstify -t 1500 -i $HOME/.icons/dark/connection_up.svg "VPN" "Connected to ${filename}"
+    dunstify -t 1500 -i $HOME/.icons/light/connection_up.svg "VPN" "Connected to ${filename}"
 }
 
 down() {
     CONNECTION=$(ifconfig | grep "vpn")
 
     if [[ -z "$CONNECTION" ]]; then
-        dunstify -u critical -t 3000 -i $HOME/.icons/dark/connection_down.svg "VPN" "Connection error"
+        dunstify -u critical -t 3000 -i $HOME/.icons/light/connection_down.svg "VPN" "Connection error"
     else
         for conf_file in "$BASE_DIR"/*.conf; do
             [[ -e "$conf_file" ]] || continue
@@ -43,7 +43,7 @@ down() {
             wg-quick down ${BASE_DIR}/"$interface_name"
         done
 
-        dunstify -t 1500 -i $HOME/.icons/dark/connection_down.svg "VPN" "Connection down"
+        dunstify -t 1500 -i $HOME/.icons/light/connection_down.svg "VPN" "Connection down"
     fi
 }
 
