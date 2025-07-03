@@ -12,21 +12,7 @@ else
     MODE="dark"
 fi
 
-if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-    export SWWW_TRANSITION_FPS=60
-    export SWWW_TRANSITION_STEP=2
-    export SWWW_TRANSITION_TYPE=simple
+export DISPLAY=:0.0
 
-    mapfile -d '' files < <(find "$WALLPAPER_DIR/$MODE" -type f -print0)
-
-    random_img=$(( RANDOM % ${#files[@]} ))
-
-    swww img "${files[$random_img]}"
-
-    sed -i "s|/wallpapers/.*|${files[$random_img]#*Pictures}|" $HOME/.config/hypr/hyprlock.conf
-else
-    export DISPLAY=:0.0
-
-    feh --bg-fill --randomize $WALLPAPER_DIR/$MODE
-fi
+feh --bg-fill --randomize $WALLPAPER_DIR/$MODE
 
