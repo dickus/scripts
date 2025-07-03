@@ -1,59 +1,76 @@
-## Random scripts
-### mvhlink.sh
-This script renames every hard link related to provided one.
+### df.sh
+Allows me to use `df` with or without `/mnt` directory based on wether it contains anything. Runs with `dfs` specified in `.zshrc`.
 
 ### gamepad-battery.sh
 This script shows you you gamepad id, name and charge.
 
+### mvhlink.sh
+This script renames every hard link related to provided one.
 
-## Neovim workflow
-### obsidian/new_file.sh
-Creates a file in $HOME/.docs catalog with a date and chosen text as its name, and opens this file with `neovim`.
-
-I use this with my obsidian.nvim workflow. It also has an alias within .zshrc file for 'on'.
-
-
-## Themes
-### theme_change/check_time.sh
-Sets light or dark theme with `theme_change/theme_schedule.sh` based on current time. Runs with `fcron`.
-
-### theme_change/theme_changer.sh
-Sets current light/dark theme in `theme_change/theme_schedule.sh` to chosen ones. It only has light/dark gruvbox and light everforest and dark nord at the time. It also has an alias within .zshrc file for 'theme'.
-
-### theme_change/theme_schedule.sh
-Changes themes for some tools based on what you've set with `theme`. Runs with `theme_change/check_time.sh`, don't need to edit this script manually.
+### random.sh
+This one takes integer and returns a random number from 1 to integer.
 
 
-## Miscellanous
-### creation_time.sh
-Gets the time that this installation exists. Runs with `fastfetch` for the custom output.
-
-### microphone.sh
-Un-/mutes default sound source (mic) and sends a notification with `dunst`. Runs with `sxhkd` keybindings.
-
+## fzf
 ### neofzf_cont.sh
 Searches for files content within $HOME and opens them with `neovim`.
 
 ### neofzf_name.sh
 Searches for files within $HOME and opens them with `neovim`.
 
+
+## obsidian
+### new_file.sh
+Creates a file in $HOME/.docs catalog with a date and chosen text as its name, and opens this file with `neovim`.
+
+I use this with my obsidian.nvim workflow.
+
+Runs with a keybinding as it uses `rofi`.
+
+
+## run
+### resolve.sh
+Makes changes in `hyprland.conf` to make sure that popups don't disappear in Davinci Resolve.
+
+
+## system
+### creation_time.sh
+Gets the time that this installation exists. Runs with `fastfetch` for a custom output.
+
+### microphone.sh
+Un-/mutes default sound source (mic) and sends a notification with `dunst`. Runs with keybindings.
+
+### pkgs.sh
+Gets installed packages with pacman, aur and flatpak to show in `fastfetch`.
+
 ### screenshoter.sh
-`scrot` had some issues with rectangular areas selection, so this script does it instead. Runs with `sxhkd` keybindings to make a screenshot of the whole screen, selected window or selected rectangle area, saves new image to $HOME/Pictures and puts it to clipboard. That's it.
+Runs with keybindings to make a screenshot of the whole screen, selected window or selected rectangle area, saves new image to $HOME/Pictures and puts it to clipboard. Uses `imagemagick` on x11 and `grim` on wayland.
 
 ### volume.sh
-Manages default sound output and sends a notification with `dunst`. Runs with `sxhkd` keybindings.
+Manages default sound output and sends a notification with `dunst`. Runs with keybindings.
 
 ### vpn.sh
-Enables/disables `wireguard` VPN with config in $HOME/.wg. Runs with `sxhkd` keybindings.
-
-### df.sh
-Allows me to use `df` with or without `/mnt` directory based on wether it contains anything. Runs with `dfs` specified in `.zshrc`.
+Enables/disables `wireguard` VPN with configs from $HOME/.wg. Runs with keybindings, uses `rofi` to pick wg conf or to down connection.
 
 
-## Wallpapers
-### wallpaper_changer.sh
-Changes wallpapers to a random image from $HOME/Pictures/wallpapers using `feh`. Runs with `fcron`.
+## theme_change
+### check_time.sh
+Sets light or dark theme with `theme_schedule.sh` based on current time. Runs with `fcron` and `theme_changer.sh`.
 
+### theme_changer.sh
+Sets current light/dark theme in `theme_schedule.sh` to chosen ones. Runs with an alias.
+
+### theme_schedule.sh
+Changes themes for some tools based on what you've set with `theme`. Runs with `check_time.sh` and doesn't require to edit this script manually.
+
+
+## wallpapers
 ### new_wallpaper.sh
-Adds a new wallpaper to $HOME/Pictures/wallpapers/[dark|light] using url.
+Adds a new wallpaper to $HOME/Pictures/wallpapers/[dark|light] using url. Runs with keybinding, uses `rofi`.
+
+### wallpaper_changer.sh
+Changes wallpapers to a random image from $HOME/Pictures/wallpapers[dark|light] depending on time of day. Runs with `fcron` on x11 and `wayland_wrapper.sh` on wayland. Uses `feh` on x11 and `swww` on wayland.
+
+### wayland_wrapper.sh
+Sets some variables for `swww` to work properly. Runs with `fcron`.
 
