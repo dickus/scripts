@@ -1,9 +1,15 @@
 #!/bin/bash
 
 BASE_DIR="$HOME/.wg"
+TERMINAL="kitty"
+
+
+check_connection() {
+    ifconfig | grep "vpn"
+}
 
 up() {
-    CONNECTION=$(ifconfig | grep "vpn")
+    CONNECTION=$(check_connection)
 
     ! [[ -z "$CONNECTION" ]] && dunstify -u critical -t 3000 -i $HOME/.icons/light/connection_down.svg "VPN" "Already connected" && exit 1
 
@@ -22,15 +28,17 @@ up() {
 
     [[ -z "$filename" ]] && exit 0
 
-    wg-quick up ${BASE_DIR}/"$filename"
+    $TERMINAL -T "popup" -e sudo resolvconf -u
+    $TERMINAL -T "popup" -e wg-quick up ${BASE_DIR}/"$filename"
 
+    CONNECTION=$(check_connection)
     filename=$(echo "$filename" | sed 's|^/||; s|\.conf$||')
 
     dunstify -t 1500 -i $HOME/.icons/light/connection_up.svg "VPN" "Connected to ${filename}"
 }
 
 down() {
-    CONNECTION=$(ifconfig | grep "vpn")
+    CONNECTION=$(check_connection)
 
     if [[ -z "$CONNECTION" ]]; then
         dunstify -u critical -t 3000 -i $HOME/.icons/light/connection_down.svg "VPN" "Connection error"
@@ -40,10 +48,12 @@ down() {
 
             interface_name=$(basename "$conf_file")
 
-            wg-quick down ${BASE_DIR}/"$interface_name"
+            $TERMINAL -T "popup" -e wg-quick down ${BASE_DIR}/"$interface_name"
         done
 
         dunstify -t 1500 -i $HOME/.icons/light/connection_down.svg "VPN" "Connection down"
+
+        nmcli device status | grep "enp.*" | sed "s|[[:space:]].*||" | xargs -ro nmcli device disconnect; nmcli device status | grep "enp.*" | sed "s|[[:space:]].*||" | xargs -ro nmcli device connect
     fi
 }
 
