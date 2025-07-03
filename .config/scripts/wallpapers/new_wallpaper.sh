@@ -49,9 +49,9 @@ command -v rofi >/dev/null || show_error "'rofi' is required"
 command -v dunst >/dev/null || show_error "'dunst' is recommended"
 
 if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-    command -v wl-copy >/dev/null && clipboard_content=$(wl-paste 2>/dev/null) || show_error "'wl-clipboard' is required"
+    clipboard_content=$(wl-paste 2>/dev/null)
 else
-    command -v xclip >/dev/null && clipboard_content=$(xclip -sel clipboard -o 2>/dev/null) || show_error "'xclip' is required"
+    clipboard_content=$(xclip -sel clipboard -o 2>/dev/null) || show_error "'xclip' is required"
 fi
 
 [[ -z "$clipboard_content" ]] && show_error "Clipboard is empty"
