@@ -24,7 +24,7 @@ declare -A replacements=(
     ["$CONFIG_DIR/polybar/config.ini"]="s|/themes/.*.ini|/themes/$TARGET_THEME.ini|"
     ["$CONFIG_DIR/rofi/config.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
     ["$CONFIG_DIR/rofi/powermenu.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
-    ["$HOME/.zshrc"]="s|latte-.*|frappe-${DIR_MODE}\"|"
+    ["$HOME/.zshrc"]="s|gruvbox-.*|gruvbox-${DIR_MODE}\"|"
 )
 
 for file in "${!replacements[@]}"; do
@@ -52,7 +52,11 @@ done
 
 cat "$CONFIG_DIR/waybar/themes/$TARGET_THEME.css" > "$CONFIG_DIR/waybar/style.css"
 
-if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-    hyprctl reload
+hyprctl reload
+
+if [[ "$DIR_MODE" == "light" ]]; then
+    hyprctl hyprsunset temperature reload
+else
+    hyprctl hyprsunset temperature 5000
 fi
 
