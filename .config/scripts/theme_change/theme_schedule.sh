@@ -24,7 +24,6 @@ declare -A replacements=(
     ["$CONFIG_DIR/polybar/config.ini"]="s|/themes/.*.ini|/themes/$TARGET_THEME.ini|"
     ["$CONFIG_DIR/rofi/config.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
     ["$CONFIG_DIR/rofi/powermenu.rasi"]="s|/themes/.*.rasi|/themes/$TARGET_THEME.rasi|"
-    ["$HOME/.zshrc"]="s|gruvbox-.*|gruvbox-${DIR_MODE}\"|"
 )
 
 for file in "${!replacements[@]}"; do
@@ -51,6 +50,7 @@ for script in "${scripts[@]}"; do
 done
 
 cat "$CONFIG_DIR/waybar/themes/$TARGET_THEME.css" > "$CONFIG_DIR/waybar/style.css"
+cat "$CONFIG_DIR/swayimg/themes/$TARGET_THEME" > "$CONFIG_DIR/swayimg/config"
 
 hyprctl reload
 
