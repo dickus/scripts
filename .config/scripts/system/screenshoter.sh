@@ -31,5 +31,7 @@ else
     esac
 fi
 
-dunstify -t 3000 -i "$SCREEN_DIR/$FILE" "Screenshot saved" "$FILE"
+if [[ -f "$SCREEN_DIR/$FILE" ]]; then
+    dunstify -t 3000 -i "$SCREEN_DIR/$FILE" "Screenshot saved" "$FILE"
+fi
 
