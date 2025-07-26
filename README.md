@@ -33,6 +33,9 @@ Adds a new wallpaper to $HOME/Pictures/wallpapers/[dark|light] using url. Runs w
 ### vpn.sh
 Enables/disables `wireguard` VPN with configs from $HOME/.wg. Runs with keybindings, uses `rofi` to pick wg conf or to down connection.
 
+### yt.sh
+Script to download videos from YouTube using `yt-dlp`.
+
 
 ## run
 ### resolve.sh
