@@ -16,12 +16,16 @@ get_name() {
 
 download() {
     yt-dlp ${URL} -o "${name}"
+
+    dunstify -t 3000 "YouTube video downloaded" "${name}"
 }
 
 audio_exctraction() {
     file=$(ls -t "${name}".* 2>/dev/null | head -1)
 
     ffmpeg -i "${file}" -vn -acodec flac "${name}".flac
+
+    dunstify -t 3000 "Audio extracted" "${name}.flac"
 }
 
 
