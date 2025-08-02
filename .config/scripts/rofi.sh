@@ -3,7 +3,7 @@
 SCRIPTS_DIR="$HOME/.config/scripts/rofi_scripts"
 TERMINAL="kitty"
 
-script=$(echo -e "Wallpaper\nNote\nVPN\nYouTube" | rofi -dmenu \
+script=$(echo -e "Note\nWallpaper\nVPN\nYouTube" | rofi -dmenu \
     -p "Script:" \
     -theme-str "window { width: 15%; }" \
     -theme-str "listview { lines: 5; }"
