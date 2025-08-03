@@ -55,7 +55,7 @@ hyprctl reload
 
 if [[ "$DIR_MODE" == "light" ]]; then
     if [[ "$LIGHT_THEME" == "latte" ]]; then
-        kitty +kitten themes --reload-in=all Catppuccin-Latte
+        kitty +kitten themes --reload-in=all Latte
     elif [[ "$LIGHT_THEME" == "gruvbox-light" ]]; then
         kitty +kitten themes --reload-in=all Gruvbox-Light
     elif [[ "$LIGHT_THEME" == "everforest" ]]; then
@@ -65,7 +65,7 @@ if [[ "$DIR_MODE" == "light" ]]; then
     hyprctl hyprsunset temperature reload
 else
     if [[ "$DARK_THEME" == "frappe" ]]; then
-        kitty +kitten themes --reload-in=all Catppuccin-Frappe
+        kitty +kitten themes --reload-in=all Frappe
     elif [[ "$DARK_THEME" == "gruvbox-dark" ]]; then
         kitty +kitten themes --reload-in=all Gruvbox-Dark
     elif [[ "$DARK_THEME" == "nord" ]]; then
