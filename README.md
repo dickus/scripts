@@ -8,7 +8,7 @@ This script renames every hard link related to provided one.
 This one takes integer and returns a random number from 1 to integer.
 
 ### rofi.sh
-This one allows to use different scripts from `rofi_scripts` directory with one keybinding.
+This one allows to use different scripts with one keybinding.
 
 
 ## fzf
@@ -19,22 +19,14 @@ Searches for files content within $HOME and opens them with `neovim`.
 Searches for files within $HOME and opens them with `neovim`.
 
 
-## rofi_scripts
-### new_note.sh
-Creates a file in $HOME/.docs catalog with a date and chosen text as its name, and opens this file with `neovim`.
+## notes
+### obsidian.sh
+Open notes by name or tag.
+Open drafts by name or tag.
+Create new notes using templates.
+Review notes.
 
-I use this with my obsidian.nvim workflow.
-
-Runs with a keybinding as it uses `rofi`.
-
-### new_wallpaper.sh
-Adds a new wallpaper to $HOME/Pictures/wallpapers/[dark|light] using url. Runs with keybinding, uses `rofi`.
-
-### vpn.sh
-Enables/disables `wireguard` VPN with configs from $HOME/.wg. Runs with keybindings, uses `rofi` to pick wg conf or to down connection.
-
-### yt.sh
-Script to download videos from YouTube using `yt-dlp`.
+All in one script using rofi.
 
 
 ## run
@@ -49,14 +41,23 @@ Gets the time that this installation exists. Runs with `fastfetch` for a custom 
 ### microphone.sh
 Un-/mutes default sound source (mic) and sends a notification with `dunst`. Runs with keybindings.
 
+### new_wallpaper.sh
+Adds a new wallpaper to $HOME/Pictures/wallpapers/ using url. Runs with keybinding, uses `rofi`.
+
 ### pkgs.sh
 Gets installed packages with pacman, aur and flatpak to show in `fastfetch`.
 
 ### screenshoter.sh
-Runs with keybindings to make a screenshot of the whole screen, selected window or selected rectangle area, saves new image to $HOME/Pictures and puts it to clipboard. Uses `imagemagick` on x11 and `grim` on wayland.
+Runs with keybindings to make a screenshot of the whole screen, selected window or selected rectangle area, saves new image to $HOME/Pictures and puts it to clipboard. Uses `grim`.
 
 ### volume.sh
 Manages default sound output and sends a notification with `dunst`. Runs with keybindings.
+
+### vpn.sh
+Enables/disables `wireguard` VPN with configs from $HOME/.wg. Runs with keybindings, uses `rofi` to pick wg conf or to down connection.
+
+### yt.sh
+Script to download videos from YouTube using `yt-dlp`.
 
 
 ## theme_change
@@ -71,14 +72,11 @@ Changes themes for some tools based on what you've set with `theme`. Runs with `
 
 
 ## wallpapers
-### wallpaper_changer.sh
-Changes wallpapers to a random image from $HOME/Pictures/wallpapers[dark|light] depending on time of day. Runs with `fcron` on x11 and `wayland_wrapper.sh` on wayland. Uses `feh` on x11 and `swww` on wayland.
+### wall_set.sh
+Sets received file as a wallpaper and background for hyprlock.
 
-### wayland_wrapper.sh
-Sets some variables for `swww` to work properly. Runs with `fcron`.
-
-### wrapper.sh
-Script that is required for `wallpaper_changer.sh` to work properly in wayland.
+### wallpaper_selector.sh
+Uses `rofi` to select a wallpaper. Manually or randomly.
 
 
 ## yazi
