@@ -11,12 +11,14 @@ CURRENT_DARK=$(get_current_theme "DARK_THEME")
 
 LIGHT_THEME=$(echo -e "everforest\ngruvbox\nlatte" | rofi -dmenu \
     -p "Light:" \
+    -i \
     -theme-str "window { width: 10%; }" \
     -theme-str "listview { lines: 3; }"
 )
 
 DARK_THEME=$(echo -e "frappe\ngruvbox\nnord" | rofi -dmenu \
     -p "Dark:" \
+    -i \
     -theme-str "window { width: 10%; }" \
     -theme-str "listview { lines: 3; }"
 )
