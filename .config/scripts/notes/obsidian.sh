@@ -170,6 +170,6 @@ elif [[ "${action}" == "Open draft" ]]; then
 elif [[ "${action}" == "New note" ]]; then
     new_note
 elif [[ "${action}" == "Review notes" ]]; then
-    cd ${DIR} && nvim drafts/*.md
+    cd ${DIR} && ${TERMINAL} -e nvim drafts/*.md
 fi
 
