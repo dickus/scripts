@@ -3,7 +3,7 @@
 BOLD="\033[1m"
 NO_FORMAT="\033[0m"
 
-BASE_DIR="$HOME/Pictures/wallpapers"
+BASE_DIR="$HOME/Pictures/wallpapers/neutral"
 
 show_error() {
     message="$1"
@@ -62,6 +62,7 @@ fi
 
 mode=$(echo -e "☀️ light\n🌙 dark" | rofi -dmenu \
     -p "Mode:" \
+    -i \
     -mesg "$url_message" \
     -theme-str "window { width: 10%; }" \
     -theme-str "listview { lines: 2; }"
@@ -82,6 +83,7 @@ fi
 
 filename=$(printf "%s\n" "${existing_files[@]}" | rofi -dmenu \
     -p "Name:" \
+    -i \
     -theme-str "window { width: 25%; }" \
     -theme-str "listview { lines: 5; columns: 2; }"
 )

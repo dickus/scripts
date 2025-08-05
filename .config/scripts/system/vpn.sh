@@ -22,6 +22,7 @@ up() {
 
     filename=$(printf "%s\n" "${existing_files[@]}" | rofi -dmenu \
         -p "VPN config:" \
+        -i \
         -theme-str "window { width: 20%; }" \
         -theme-str "listview { lines: 5; columns: 2; }"
     )
@@ -59,6 +60,7 @@ down() {
 
 mode=$(echo -e "up\ndown" | rofi -dmenu \
     -p "Mode:" \
+    -i \
     -theme-str "window { width: 7%; }" \
     -theme-str "listview { lines: 2; }"
 )
