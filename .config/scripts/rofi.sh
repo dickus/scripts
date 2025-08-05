@@ -1,22 +1,21 @@
 #!/bin/bash
 
-SCRIPTS_DIR="$HOME/.config/scripts/rofi_scripts"
-TERMINAL="kitty"
+SCRIPTS_DIR="$HOME/.config/scripts"
 
-script=$(echo -e "Note\nWallpaper\nVPN\nYouTube" | rofi -dmenu \
+script=$(echo -e "New wallpaper\nVPN\nYouTube download" | rofi -dmenu \
     -p "Script:" \
-    -theme-str "window { width: 15%; }" \
-    -theme-str "listview { lines: 5; }"
+    -i \
+    -theme-str "window { width: 10%; }" \
+    -theme-str "listview { lines: 3; }"
 )
 
-case $script in
-    Wallpaper)
-        ${SCRIPTS_DIR}/new_wallpaper.sh ;;
-    Note)
-        ${SCRIPTS_DIR}/new_note.sh ${TERMINAL};;
-    VPN)
-        ${SCRIPTS_DIR}/vpn.sh ;;
-    YouTube)
-        ${SCRIPTS_DIR}/yt.sh ;;
-esac
+[[ -z "${script}" ]] && exit 0
+
+if [[ "${script}" == "New wallpaper" ]]; then
+    ${SCRIPTS_DIR}/system/new_wallpaper.sh
+elif [[ "${script}" == "VPN" ]]; then
+    ${SCRIPTS_DIR}/system/vpn.sh
+elif [[ "${script}" == "YouTube download" ]]; then
+    ${SCRIPTS_DIR}/system/yt.sh
+fi
 
