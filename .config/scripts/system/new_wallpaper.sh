@@ -3,7 +3,7 @@
 BOLD="\033[1m"
 NO_FORMAT="\033[0m"
 
-BASE_DIR="${HOME}/Pictures/wallpapers/neutral"
+BASE_DIR="${HOME}/Pictures/wallpapers"
 
 show_error() {
     message="$1"
