@@ -1,6 +1,6 @@
 #!/bin/bash
 
-app=$(echo -e "Librewolf\nTelegram\nDiscord\nGIMP\nDaVinci Resolve\nAudacity\nSteam\nBattle.net" | \
+app=$(echo -e "qBittorrent\nTelegram\nDiscord\nGIMP\nDaVinci Resolve\nAudacity\nSteam\nBattle.net" | \
     sort | \
     rofi -dmenu \
     -p "App:" \
@@ -11,8 +11,8 @@ app=$(echo -e "Librewolf\nTelegram\nDiscord\nGIMP\nDaVinci Resolve\nAudacity\nSt
 
 [[ -z "${app}" ]] && exit 0
 
-if [[ "${app}" == "Librewolf" ]]; then
-    librewolf
+if [[ "${app}" == "qBittorrent" ]]; then
+    org.qbittorrent.qBittorrent
 elif [[ "${app}" == "Telegram" ]]; then
     org.telegram.desktop
 elif [[ "${app}" == "Discord" ]]; then
