@@ -16,11 +16,7 @@ pid=$(echo "${process}" | \
     awk -F: '{print $1}'
 )
 
-name=$(echo "${process}" | \
-    awk -F: '{print $2}'
-)
-
 [[ -z "${process}" ]] && exit 0
 
-kill -9 "${pid}" && dunstify -t 2000 "Process killed" "Command:${name}\nPID: ${pid}"
+kill -9 "${pid}" && dunstify -t 2000 "Process killed" "PID: ${pid}"
 
