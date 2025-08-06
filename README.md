@@ -47,6 +47,9 @@ Adds a new wallpaper to $HOME/Pictures/wallpapers/ using url. Runs with keybindi
 ### pkgs.sh
 Gets installed packages with pacman, aur and flatpak to show in `fastfetch`.
 
+### process.sh
+Process killer with rofi.
+
 ### screenshoter.sh
 Runs with keybindings to make a screenshot of the whole screen, selected window or selected rectangle area, saves new image to $HOME/Pictures and puts it to clipboard. Uses `grim`.
 
