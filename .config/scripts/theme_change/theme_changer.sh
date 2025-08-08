@@ -1,6 +1,9 @@
 #!/bin/bash
 
-THEME_SCRIPT="${HOME}/.config/scripts/theme_change/theme_schedule.sh"
+BASE_DIR="${HOME}/.config/scripts/theme_change"
+THEME_SCRIPT="${BASE_DIR}/theme_schedule.sh"
+LIGHT_DIR="${BASE_DIR}/light"
+DARK_DIR="${BASE_DIR}/dark"
 
 get_current_theme() {
     grep -oP "$1=\"\K[^\"]+" "${THEME_SCRIPT}" | tail -n 1
@@ -9,18 +12,37 @@ get_current_theme() {
 CURRENT_LIGHT=$(get_current_theme "LIGHT_THEME")
 CURRENT_DARK=$(get_current_theme "DARK_THEME")
 
-LIGHT_THEME=$(echo -e "everforest\ngruvbox\nlatte" | rofi -dmenu \
+
+LIGHT_THEMES=()
+if [[ -d "${LIGHT_DIR}" ]]; then
+    while IFS= read -r file; do
+        LIGHT_THEMES+=("${file}")
+    done < <(find "${LIGHT_DIR}" -type f -printf "%f\n")
+fi
+
+LIGHT_THEME=$(printf "%s\n" "${LIGHT_THEMES[@]}" | \
+    sort | \
+    rofi -dmenu \
     -p "Light:" \
     -i \
     -theme-str "window { width: 10%; }" \
-    -theme-str "listview { lines: 3; }"
+    -theme-str "listview { lines: $(printf "%s\n" "${LIGHT_THEMES[@]}" | wc -l); }"
 )
 
-DARK_THEME=$(echo -e "frappe\ngruvbox\nnord" | rofi -dmenu \
+DARK_THEMES=()
+if [[ -d "${DARK_DIR}" ]]; then
+    while IFS= read -r file; do
+        DARK_THEMES+=("${file}")
+    done < <(find "${DARK_DIR}" -type f -printf "%f\n")
+fi
+
+DARK_THEME=$(printf "%s\n" "${DARK_THEMES[@]}" | \
+    sort | \
+    rofi -dmenu \
     -p "Dark:" \
     -i \
     -theme-str "window { width: 10%; }" \
-    -theme-str "listview { lines: 3; }"
+    -theme-str "listview { lines: $(printf "%s\n" "${DARK_THEMES[@]}" | wc -l); }"
 )
 
 update_theme() {
@@ -50,6 +72,8 @@ if ! [[ -z ${DARK_THEME} ]]; then
         update_theme "DARK_THEME" "${DARK_THEME}" "${CURRENT_DARK}"
     fi
 fi
+
+[[ -z ${LIGHT_THEME} ]] && [[ -z ${DARK_THEME} ]] && exit 0
 
 ${HOME}/.config/scripts/theme_change/check_time.sh
 
