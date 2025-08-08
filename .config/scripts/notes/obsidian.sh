@@ -31,6 +31,8 @@ open_note_name() {
         stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||')
 
         if [[ "${stripped_note}" == "${note}" ]]; then
+            cd ${DIR}
+
             ${TERMINAL} -e nvim "${dir}/${original_note}"
 
             break
@@ -79,6 +81,8 @@ open_note_tag() {
         stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||')
 
         if [[ "${stripped_note}" == "${note}" ]]; then
+            cd ${DIR}
+
             ${TERMINAL} -e nvim "${original_note}"
 
             break
@@ -150,6 +154,8 @@ new_note() {
     cat "${TEMPLATES}/${template}" > "${target_file}"
 
     sed -i "s|{{id}}|${dated_file}|g" "${target_file}"
+
+    cd ${DIR}
 
     ${TERMINAL} -e nvim "${target_file}"
 }
