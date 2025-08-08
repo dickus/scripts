@@ -15,7 +15,6 @@ if [[ "$THEME" == "dark" ]]; then
 fi
 
 declare -A replacements=(
-    ["$CONFIG_DIR/alacritty/alacritty.toml"]="s|/themes/.*.toml|/themes/$TARGET_THEME.toml|"
     ["$CONFIG_DIR/bspwm/bspwmrc"]="s|/themes/.*.sh|/themes/$TARGET_THEME.sh|"
     ["$CONFIG_DIR/hypr/hyprland.conf"]="s|/dunstrc_.*|/dunstrc_$TARGET_THEME| ; s|/themes/.*.conf|/themes/$TARGET_THEME.conf|"
     ["$CONFIG_DIR/hypr/hyprlock.conf"]="s|themes/.*.conf|themes/$TARGET_THEME.conf|"
@@ -54,24 +53,8 @@ cat "$CONFIG_DIR/swayimg/themes/$TARGET_THEME" > "$CONFIG_DIR/swayimg/config"
 hyprctl reload
 
 if [[ "$DIR_MODE" == "light" ]]; then
-    if [[ "$LIGHT_THEME" == "latte" ]]; then
-        kitty +kitten themes --reload-in=all Latte
-    elif [[ "$LIGHT_THEME" == "gruvbox-light" ]]; then
-        kitty +kitten themes --reload-in=all Gruvbox-Light
-    elif [[ "$LIGHT_THEME" == "everforest" ]]; then
-        kitty +kitten themes --reload-in=all Everforest
-    fi
-
-    hyprctl hyprsunset temperature reload
+    kitty +kitten themes --reload-in=all "${LIGHT_THEME^}"
 else
-    if [[ "$DARK_THEME" == "frappe" ]]; then
-        kitty +kitten themes --reload-in=all Frappe
-    elif [[ "$DARK_THEME" == "gruvbox-dark" ]]; then
-        kitty +kitten themes --reload-in=all Gruvbox-Dark
-    elif [[ "$DARK_THEME" == "nord" ]]; then
-        kitty +kitten themes --reload-in=all Nord
-    fi
-
-    hyprctl hyprsunset temperature 5000
+    kitty +kitten themes --reload-in=all "${DARK_THEME^}"
 fi
 
