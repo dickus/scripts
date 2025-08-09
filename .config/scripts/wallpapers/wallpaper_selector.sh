@@ -16,7 +16,7 @@ category=$(printf "%s\n" "${categories[@]}" | \
     -p "Wallpapers:" \
     -i \
     -theme-str "window { width: 8%; }" \
-    -theme-str "listview { lines: 5; columns: $(printf "%s\n" ${categories[@]} | \
+    -theme-str "listview { lines: $(printf "%s\n" ${categories[@]} | \
         wc -l); }"
 )
 
