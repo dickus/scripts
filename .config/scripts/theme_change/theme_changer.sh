@@ -58,19 +58,11 @@ update_theme() {
 }
 
 if ! [[ -z ${LIGHT_THEME} ]]; then
-    if [[ ${LIGHT_THEME} == "gruvbox" ]]; then
-        update_theme "LIGHT_THEME" "${LIGHT_THEME}-light" "${CURRENT_LIGHT}"
-    else
-        update_theme "LIGHT_THEME" "${LIGHT_THEME}" "${CURRENT_LIGHT}"
-    fi
+    update_theme "LIGHT_THEME" "${LIGHT_THEME}" "${CURRENT_LIGHT}"
 fi
 
 if ! [[ -z ${DARK_THEME} ]]; then
-    if [[ ${DARK_THEME} == "gruvbox" ]]; then
-        update_theme "DARK_THEME" "${DARK_THEME}-dark" "${CURRENT_DARK}"
-    else
-        update_theme "DARK_THEME" "${DARK_THEME}" "${CURRENT_DARK}"
-    fi
+    update_theme "DARK_THEME" "${DARK_THEME}" "${CURRENT_DARK}"
 fi
 
 [[ -z ${LIGHT_THEME} ]] && [[ -z ${DARK_THEME} ]] && exit 0
