@@ -1,26 +1,7 @@
 #!/bin/bash
 
-WALL_DIR="${HOME}/Pictures/wallpapers"
+WALL_DIR="${HOME}/Pictures/wallpapers/all"
 MODE="$1"
-
-categories=()
-if [[ -d "${WALL_DIR}" ]]; then
-    while IFS= read -r file; do
-        categories+=("${file}")
-    done < <(find "${WALL_DIR}" -mindepth 1 -maxdepth 1 -type d -printf "%f\n")
-fi
-
-category=$(printf "%s\n" "${categories[@]}" | \
-    sort | \
-    rofi -dmenu \
-    -p "Wallpapers:" \
-    -i \
-    -theme-str "window { width: 8%; }" \
-    -theme-str "listview { lines: $(printf "%s\n" ${categories[@]} | \
-        wc -l); }"
-)
-
-[[ -z "${category}" ]] && exit 0
 
 manual() {
     find ${WALL_DIR}/${category} -type f | \
