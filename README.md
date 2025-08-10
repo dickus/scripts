@@ -1,3 +1,9 @@
+### apps.sh
+Launcher for most used apps.
+
+### colorpicker.sh
+Color picker based on `hyprpicker` but with proper notifications.
+
 ### df.sh
 Allows me to use `df` with or without `/mnt` directory based on wether it contains anything. Runs with `dfs` specified in `.zshrc`.
 
