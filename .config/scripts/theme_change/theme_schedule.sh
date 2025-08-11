@@ -17,7 +17,7 @@ if [[ "${THEME}" == "dark" ]]; then
 fi
 
 declare -A replacements=(
-    ["${CONFIG_DIR}/hypr/hyprland.conf"]="s|/dunstrc_.*|/dunstrc_${TARGET_THEME}| ; s|/themes/.*.conf|/themes/${TARGET_THEME}.conf|"
+    ["${CONFIG_DIR}/hypr/hyprland.conf"]="s|/dunstrc_.*|/dunstrc_${TARGET_THEME} &| ; s|/themes/.*.conf|/themes/${TARGET_THEME}.conf|"
     ["${CONFIG_DIR}/hypr/hyprlock.conf"]="s|themes/.*.conf|themes/${TARGET_THEME}.conf|"
     ["${CONFIG_DIR}/nvim/init.lua"]="s|themes.*|themes.${TARGET_THEME}\")|"
     ["${CONFIG_DIR}/rofi/config.rasi"]="s|/themes/.*.rasi|/themes/${TARGET_THEME}.rasi|"
