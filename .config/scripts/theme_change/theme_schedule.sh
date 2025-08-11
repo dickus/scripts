@@ -22,6 +22,7 @@ declare -A replacements=(
     ["${CONFIG_DIR}/nvim/init.lua"]="s|themes.*|themes.${TARGET_THEME}\")|"
     ["${CONFIG_DIR}/rofi/config.rasi"]="s|/themes/.*.rasi|/themes/${TARGET_THEME}.rasi|"
     ["${CONFIG_DIR}/rofi/powermenu.rasi"]="s|/themes/.*.rasi|/themes/${TARGET_THEME}.rasi|"
+    ["${CONFIG_DIR}/eww/eww.scss"]="s|themes/.*|themes/${TARGET_THEME}';|"
 )
 
 for file in "${!replacements[@]}"; do
