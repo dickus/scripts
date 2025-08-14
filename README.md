@@ -1,11 +1,11 @@
-### apps.sh
-Launcher for most used apps.
-
 ### colorpicker.sh
 Color picker based on `hyprpicker` but with proper notifications.
 
 ### df.sh
 Allows me to use `df` with or without `/mnt` directory based on wether it contains anything. Runs with `dfs` specified in `.zshrc`.
+
+### hotkeys_help.sh
+A little rofi module to check hyprland keybinds.
 
 ### mvhlink.sh
 This script renames every hard link related to provided one.
@@ -15,6 +15,9 @@ This one takes integer and returns a random number from 1 to integer.
 
 ### rofi.sh
 This one allows to use different scripts with one keybinding.
+
+### tmux.sh
+A script to select tmux layouts.
 
 
 ## fzf
@@ -27,6 +30,7 @@ Searches for files within $HOME and opens them with `neovim`.
 
 ## notes
 ### obsidian.sh
+Open quicknote.
 Open notes by name or tag.
 Open drafts by name or tag.
 Create new notes using templates.
@@ -41,6 +45,12 @@ Makes changes in `hyprland.conf` to make sure that popups don't disappear in Dav
 
 
 ## system
+### all_apps.sh
+Launcher for all apps.
+
+### apps.sh
+Launcher for most used apps.
+
 ### creation_time.sh
 Gets the time that this installation exists. Runs with `fastfetch` for a custom output.
 
