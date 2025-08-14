@@ -62,7 +62,7 @@ fi
 filename=$(printf "%s\n" "${existing_files[@]}" | rofi -dmenu \
     -p "Name:" \
     -i \
-    -theme-str "window { width: 25%; }" \
+    -theme-str "window { width: 15%; }" \
     -theme-str "listview { lines: 5; columns: 2; }"
 )
 
