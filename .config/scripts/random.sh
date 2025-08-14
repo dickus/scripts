@@ -1,17 +1,18 @@
 #!/bin/bash
 
-if [[ $# -ne 1 ]]; then
-    echo "Error: only one argument required." >&2
+number=$(rofi -dmenu \
+    -p "Integer:" \
+    -theme-str "window { width: 15%; }" \
+    -theme-str "listview { lines: 1; }" \
+)
 
-    exit 1
+if ! [[ ${number} =~ ^[1-9][0-9]*$ ]]; then
+    dunstify -t 5000 "Are you retarded or something?"
+
+    exit 0
 fi
 
-if ! [[ $1 =~ ^[1-9][0-9]*$ ]]; then
-    echo "Error: argument must be int." >&2
+RANDOM_NUMBER=$((1 + RANDOM % ${number}))
 
-    exit 1
-fi
-
-RANDOM_NUMBER=$((1 + RANDOM % $1))
-echo $RANDOM_NUMBER
+dunstify -t 5000 "${RANDOM_NUMBER}"
 
