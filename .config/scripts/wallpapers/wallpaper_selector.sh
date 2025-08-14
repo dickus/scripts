@@ -1,25 +1,44 @@
 #!/bin/bash
 
-WALL_DIR="${HOME}/Pictures/wallpapers/all"
-MODE="$1"
+WALL_DIR="${HOME}/Pictures/wallpapers"
+MODE="${1}"
+
+
+get_unique_files() {
+    declare -A hashes
+    while IFS= read -r -d $'\0' file; do
+        if [[ -f "${file}" ]]; then
+            hash=$(md5sum "${file}" | awk '{ print $1 }')
+
+            if [ -z "${hashes[${hash}]}" ]; then
+                hashes[${hash}]=1
+                printf "%s\0" "${file[@]}"
+            fi
+        fi
+    done
+}
 
 manual() {
-    find ${WALL_DIR}/${category} -type f | \
-        sort | \
-        xargs -r swayimg -g
+    find "${WALL_DIR}" -type f -print0 | \
+        get_unique_files | \
+        sort -z | \
+        xargs -0 -r swayimg -g
 }
 
 random() {
-    mapfile -t files < <(find ${WALL_DIR}/${category} -type f | \
-        sort)
+    local files=()
+    while IFS= read -r -d $'\0' file; do
+        files+=("${file}")
+    done < <(find "${WALL_DIR}" -type f -print0 | get_unique_files | sort -z)
 
-    files_count=$(printf "%s\n" "${files[@]}" | \
-        wc -l)
+    local files_count="${#files[@]}"
+    if [[ "${files_count}" -eq 0 ]]; then
+        exit 0
+    fi
 
-    file=$((1 + RANDOM % ${files_count}))
+    local index=$(( RANDOM % files_count))
 
-    ${HOME}/.config/scripts/wallpapers/wall_set.sh "$(printf "%s\n" "${files[@]}" | \
-        sed -n "${file}p")"
+    "${HOME}/.config/scripts/wallpapers/wall_set.sh" "${files[${index}]}"
 }
 
 if [[ "${MODE}" == "random" ]]; then
