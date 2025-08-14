@@ -1,6 +1,6 @@
 #!/bin/bash
 
-THEME="$1"
+THEME="${1}"
 LIGHT_THEME="fjord"
 DARK_THEME="nord"
 

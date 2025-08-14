@@ -6,7 +6,7 @@ LIGHT_DIR="${BASE_DIR}/light"
 DARK_DIR="${BASE_DIR}/dark"
 
 get_current_theme() {
-    grep -oP "$1=\"\K[^\"]+" "${THEME_SCRIPT}" | tail -n 1
+    grep -oP "${1}=\"\K[^\"]+" "${THEME_SCRIPT}" | tail -n 1
 }
 
 CURRENT_LIGHT=$(get_current_theme "LIGHT_THEME")
@@ -46,9 +46,9 @@ DARK_THEME=$(printf "%s\n" "${DARK_THEMES[@]}" | \
 )
 
 update_theme() {
-    local var_name=$1
-    local new_value=$2
-    local current_value=$3
+    local var_name=${1}
+    local new_value=${2}
+    local current_value=${3}
 
     if [[ "${current_value}" != "${new_value}" ]]; then
         sed -i "s|^\(${var_name}=\).*|\1\"${new_value}\"|" "${THEME_SCRIPT}"

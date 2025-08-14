@@ -2,9 +2,9 @@
 
 SDC=$(lsblk | grep "sdc")
 
-if [[ -z "$SDC" ]]; then
+if [[ -z "${SDC}" ]]; then
     df -h / /home
 else
-    df -h / /home $HOME/mnt
+    df -h / /home ${HOME}/mnt
 fi
 

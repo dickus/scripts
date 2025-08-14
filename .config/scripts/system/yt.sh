@@ -1,7 +1,7 @@
 #!/bin/bash
 
 show_error() {
-    message="$1"
+    message="${1}"
 
     dunstify -u critical -t 3000 "Error" "${message}"
 

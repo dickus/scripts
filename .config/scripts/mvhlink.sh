@@ -10,7 +10,7 @@ if [[ "$#" -ne 3 ]] && [[ "$#" -ne 1 ]]; then
     exit
 fi
 
-if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+if [[ "${1}" == "-h" ]] || [[ "${1}" == "--help" ]]; then
     echo -e "A script to rename all hard links for the file.\n"
 
     echo -e "${BOLD_UNDERLINE}Usage:${NO_FORMAT} ${BOLD}mvhlink.sh${NO_FORMAT} [ [OPTIONS] | [SEARCH PATH] [LINK PATH] [NEW NAME] ]\n"
@@ -27,5 +27,5 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     exit
 fi
 
-find "$1" -samefile "$2" -exec sh -c 'mv "$0" "$(dirname "$0")/'"$3"'"' {} \;
+find "${1}" -samefile "${2}" -exec sh -c 'mv "$0" "$(dirname "$0")/'"${3}"'"' {} \;
 

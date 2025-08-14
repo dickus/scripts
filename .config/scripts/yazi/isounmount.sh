@@ -1,6 +1,6 @@
 #!/bin/bash
 
-fusermount -u $HOME/mnt
+fusermount -u ${HOME}/mnt
 
-dunstify -t 3000 -i $HOME/.icons/light/disc-unmount.svg "ISO unmounted"
+dunstify -t 3000 -i ${HOME}/.icons/light/disc-unmount.svg "ISO unmounted"
 
