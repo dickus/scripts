@@ -5,6 +5,7 @@ LAYOUTS="${HOME}/.config/tmux/layouts"
 
 get_session_name() {
     session_name="$(tmux ls | \
+        sed 's|:.*||' | \
         rofi -dmenu \
         -p "Session name:" \
         -theme-str "window { width: 15%; }" \
