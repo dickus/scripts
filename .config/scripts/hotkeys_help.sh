@@ -22,7 +22,7 @@ mapfile -t comm < <(cat "${FILE}" | \
 )
 
 list=$(for ((i=0; i<${#keys[@]}; i++)); do
-    printf "%-18s %s\n" "${keys[i]}" "${comm[i]}"
+    printf "%-20s %s\n" "${keys[i]}" "${comm[i]}"
 done)
 
 key=$(echo -e "${list}" | \
