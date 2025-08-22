@@ -7,11 +7,10 @@ TEMPLATES="${DIR}/templates"
 TERMINAL="kitty"
 
 open_note_name() {
-    local dir="$1"
-    mapfile -t notes < <(find "${dir}" -type f -printf "%f\n")
+    mapfile -t notes < <(find "${DIR}" -type f -printf "%P\n")
 
     local note=$(printf "%s\n" "${notes[@]}" | \
-        sed 's|^[^_]*_||' | \
+        sed 's|^[^_]*_||; s|.md||' | \
         sort | \
         rofi -dmenu \
         -p "Note:" \
@@ -23,12 +22,12 @@ open_note_name() {
     [[ -z "${note}" ]] && open_note
 
     for original_note in "${notes[@]}"; do
-        local stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||')
+        local stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||; s|.md||')
 
         if [[ "${stripped_note}" == "${note}" ]]; then
             cd ${DIR}
 
-            ${TERMINAL} -e nvim "${dir}/${original_note}"
+            ${TERMINAL} -e nvim "${original_note}"
 
             exit 0
         fi
@@ -36,9 +35,8 @@ open_note_name() {
 }
 
 open_note_tag() {
-    local dir="$1"
-    if [[ -d "${dir}" ]]; then
-        mapfile -t tags < <(realpath "${dir}"/* | \
+    if [[ -d "${DIR}" ]]; then
+        mapfile -t tags < <(realpath "${DIR}"/* | \
         xargs -r grep -r "\- #" | \
         sed 's|.*#||' | \
         sort | \
@@ -53,15 +51,15 @@ open_note_tag() {
     )
 
     [[ -z "${tag}" ]] && exit 0
-    if [[ -d "${dir}" ]]; then
-        mapfile -t notes < <(realpath "${dir}"/* | \
+    if [[ -d "${DIR}" ]]; then
+        mapfile -t notes < <(realpath "${DIR}"/* | \
         xargs -r grep -r "#${tag}" | \
         sed 's|:.*||' | \
         sort)
     fi
 
     local note=$(printf "%s\n" "${notes[@]}" | \
-        sed 's|^[^_]*_||' | \
+        sed 's|^[^_]*_||; s|.md||' | \
         sort | \
         rofi -dmenu \
         -p "Note:" \
@@ -86,7 +84,6 @@ open_note_tag() {
 }
 
 open_note() {
-    local dir="$1"
     local open=$(echo -e "By name\nBy tag" | rofi -dmenu \
         -p "Open note:" \
         -i \
@@ -97,9 +94,9 @@ open_note() {
     [[ -z "${open}" ]] && main
 
     if [[ "${open}" == "By name" ]]; then
-        open_note_name "${dir}"
+        open_note_name
     elif [[ "${open}" == "By tag" ]]; then
-        open_note_tag "${dir}"
+        open_note_tag
     fi
 }
 
@@ -151,19 +148,25 @@ new_note() {
 }
 
 main() {
-    action=$(echo -e "Quick note\nOpen note\nOpen draft\nNew note\nReview notes" | rofi -dmenu \
+    actions=(
+        "Quick note"
+        "Open note"
+        "New note"
+        "Review notes"
+    )
+
+    action=$(printf "%s\n" "${actions[@]}" | rofi -dmenu \
         -p "Notes:" \
         -i \
         -theme-str "window { width: 10%; }" \
-        -theme-str "listview { lines: 5; }"
+        -theme-str "listview { lines: 4; }"
     )
 
     [[ -z "${action}" ]] && exit 0
 
     case "${action}" in
         "Quick note") ${TERMINAL} -T "quicknote" -e nvim ;;
-        "Open note") open_note "${NOTES}" ;;
-        "Open draft") open_note "${DRAFTS}" ;;
+        "Open note") open_note ;;
         "New note") new_note ;;
         "Review notes")
             cd ${DIR} && ${TERMINAL} -e nvim ${DRAFTS}/*.md
