@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-app=$(echo -e "qBittorrent\nTelegram\nDiscord\nGIMP\nDaVinci Resolve\nAudacity\nSteam\nBattle.net" | \
+app=$(echo -e "qBittorrent\nCommunication\nGIMP\nDaVinci Resolve\nAudacity\nSteam\nWorld of Warcraft" | \
     sort | \
     rofi -dmenu \
     -p "App:" \
@@ -13,10 +13,10 @@ app=$(echo -e "qBittorrent\nTelegram\nDiscord\nGIMP\nDaVinci Resolve\nAudacity\n
 
 if [[ "${app}" == "qBittorrent" ]]; then
     org.qbittorrent.qBittorrent
-elif [[ "${app}" == "Telegram" ]]; then
-    org.telegram.desktop
-elif [[ "${app}" == "Discord" ]]; then
-    dev.vencord.Vesktop
+elif [[ "${app}" == "Communication" ]]; then
+    org.telegram.desktop &
+
+    dev.vencord.Vesktop &
 elif [[ "${app}" == "GIMP" ]]; then
     org.gimp.GIMP
 elif [[ "${app}" == "DaVinci Resolve" ]]; then
@@ -25,7 +25,7 @@ elif [[ "${app}" == "Audacity" ]]; then
     ${HOME}/.config/waybar/runners/audacity.sh
 elif [[ "${app}" == "Steam" ]]; then
     mangohud steam -console
-elif [[ "${app}" == "Battle.net" ]]; then
+elif [[ "${app}" == "World of Warcraft" ]]; then
     env LUTRIS_SKIP_INIT=1 lutris lutris:rungameid/1 &
 
     wowup-cf
