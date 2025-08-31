@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DIR="${HOME}/.docs"
 NOTES="${DIR}/notes"
@@ -149,6 +149,7 @@ new_note() {
 
 main() {
     actions=(
+        "TODO"
         "Quick note"
         "Open note"
         "New note"
@@ -159,12 +160,13 @@ main() {
         -p "Notes:" \
         -i \
         -theme-str "window { width: 10%; }" \
-        -theme-str "listview { lines: 4; }"
+        -theme-str "listview { lines: $(printf "%s\n" "${actions[@]}" | wc -l); }"
     )
 
     [[ -z "${action}" ]] && exit 0
 
     case "${action}" in
+        "TODO") ${TERMINAL} -T "todos" -e nvim ${HOME}/.docs/todos.md ;;
         "Quick note") ${TERMINAL} -T "quicknote" -e nvim ;;
         "Open note") open_note ;;
         "New note") new_note ;;
