@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 TERMINAL="kitty"
 LAYOUTS="${HOME}/.config/tmux/layouts"

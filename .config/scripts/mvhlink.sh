@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BOLD="\033[1m"
 BOLD_UNDERLINE="\033[1m\033[4m"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
     sed -i "s|follow_mouse = .*|follow_mouse = 3|" "$HOME/.config/hypr/hyprland.conf"

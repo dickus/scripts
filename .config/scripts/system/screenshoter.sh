@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 FILE="screen_$(date +%F_%H%M%S)".png
 SCREEN_DIR="${HOME}/Pictures"

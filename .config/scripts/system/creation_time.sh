@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 CREATION_DATE=$(stat -c %W /)
 CURRENT_TIME=$(date +%s)

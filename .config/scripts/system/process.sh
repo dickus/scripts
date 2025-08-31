@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 get_process() {
     local process_list=$(ps --no-headers -eo pid,comm,pmem --sort=-%mem | \

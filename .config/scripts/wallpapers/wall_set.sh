@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 wall=$(echo "${1}" | sed 's|.*/Pictures/||')
 

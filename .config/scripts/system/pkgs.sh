@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PACMAN=$(pacman -Qn | wc -l)
 AUR=$(pacman -Qm | wc -l)

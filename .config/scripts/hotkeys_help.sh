@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 FILE="${HOME}/.config/hypr/conf/keybinds.conf"
 

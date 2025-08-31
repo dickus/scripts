@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 number=$(rofi -dmenu \
     -p "Integer:" \

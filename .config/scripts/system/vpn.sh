@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${HOME}/.wg"
 TERMINAL="kitty"

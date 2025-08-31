@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BOLD="\033[1m"
 NO_FORMAT="\033[0m"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ISO="${1}"
 MOUNT_DIR="${HOME}/mnt"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 WALL_DIR="${HOME}/Pictures/wallpapers"
 MODE="${1}"

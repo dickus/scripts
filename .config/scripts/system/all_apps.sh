@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 apps=$(rofi -show drun \
     -theme-str "window { width: 20%; }" \

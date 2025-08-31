@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BASE_DIR="${HOME}/.config/scripts/theme_change"
 THEME_SCRIPT="${BASE_DIR}/theme_schedule.sh"
