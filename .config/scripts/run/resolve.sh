@@ -1,16 +1,8 @@
 #!/usr/bin/env bash
 
-if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-    sed -i "s|follow_mouse = .*|follow_mouse = 3|" "$HOME/.config/hypr/hyprland.conf"
-
-    hyprctl reload
-fi
+hyprctl keyword input:follow_mouse 3
 
 /opt/resolve/bin/resolve "$@"
 
-if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-    sed -i "s|follow_mouse = .*|follow_mouse = 1|" "$HOME/.config/hypr/hyprland.conf"
-
-    hyprctl reload
-fi
+hyprctl keyword input:follow_mouse 1
 
