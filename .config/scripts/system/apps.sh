@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 
-app=$(echo -e "qBittorrent\nCommunication\nGIMP\nDaVinci Resolve\nAudacity\nSteam\nWorld of Warcraft" | \
+apps=(
+    "qBittorrent"
+    "Communication"
+    "GIMP"
+    "DaVinci Resolve"
+    "Audacity"
+    "Steam"
+    "World of Warcraft"
+    "Minecraft"
+)
+
+app=$(printf "%s\n" "${apps[@]}" | \
     sort | \
     rofi -dmenu \
     -p "App:" \
@@ -11,25 +22,28 @@ app=$(echo -e "qBittorrent\nCommunication\nGIMP\nDaVinci Resolve\nAudacity\nStea
 
 [[ -z "${app}" ]] && exit 0
 
-if [[ "${app}" == "qBittorrent" ]]; then
-    org.qbittorrent.qBittorrent
-elif [[ "${app}" == "Communication" ]]; then
-    org.telegram.desktop &
+case "${app}" in
+    "qBittorrent")
+        org.qbittorrent.qBittorrent ;;
+    "Communication")
+        org.telegram.desktop &
 
-    dev.vencord.Vesktop &
-elif [[ "${app}" == "GIMP" ]]; then
-    org.gimp.GIMP
-elif [[ "${app}" == "DaVinci Resolve" ]]; then
-    ${HOME}/.config/scripts/run/resolve.sh
-elif [[ "${app}" == "Audacity" ]]; then
-    ${HOME}/.config/waybar/runners/audacity.sh
-elif [[ "${app}" == "Steam" ]]; then
-    mangohud steam -console
-elif [[ "${app}" == "World of Warcraft" ]]; then
-    env LUTRIS_SKIP_INIT=1 lutris lutris:rungameid/1 &
+        dev.vencord.Vesktop & ;;
+    "GIMP")
+        org.gimp.GIMP ;;
+    "DaVinci Resolve")
+        ${HOME}/.config/scripts/run/resolve.sh ;;
+    "Audacity")
+        ${HOME}/.config/waybar/runners/audacity.sh ;;
+    "Steam")
+        mangohud steam -console ;;
+    "World of Warcraft")
+        env LUTRIS_SKIP_INIT=1 lutris lutris:rungameid/1 &
 
-    wowup-cf
+        wowup-cf
 
-    env "${HOME}/PortProton/data/scripts/start.sh" "${HOME}/PortProton/data/prefixes/BATTLE_NET/drive_c/Program Files (x86)/Battle.net/Battle.net.exe"
-fi
+        env "${HOME}/PortProton/data/scripts/start.sh" "${HOME}/PortProton/data/prefixes/BATTLE_NET/drive_c/Program Files (x86)/Battle.net/Battle.net.exe" ;;
+    "Minecraft")
+        org.prismlauncher.PrismLauncher ;;
+esac
 
