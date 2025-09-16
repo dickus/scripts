@@ -15,7 +15,7 @@ open_note_name() {
         rofi -dmenu \
         -p "Note:" \
         -i \
-        -theme-str "window { width: 20%; }" \
+        -theme-str "window { width: 25%; }" \
         -theme-str "listview { lines: 10; }"
     )
 
@@ -46,7 +46,7 @@ open_note_tag() {
     local tag=$(printf "%s\n" "${tags[@]}" | rofi -dmenu \
         -p "Tag:" \
         -i \
-        -theme-str "window { width: 20%; }" \
+        -theme-str "window { width: 25%; }" \
         -theme-str "listview { lines: 10; }"
     )
 
@@ -71,7 +71,7 @@ open_note_tag() {
     [[ -z "${note}" ]] && open_note
 
     for original_note in "${notes[@]}"; do
-        local stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||')
+        local stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||; s|.md||')
 
         if [[ "${stripped_note}" == "${note}" ]]; then
             cd ${DIR}
@@ -109,7 +109,7 @@ new_note() {
         -p "Template:" \
         -i \
         -theme-str "window { width: 10%; }" \
-        -theme-str "listview { lines: 4; }"
+        -theme-str "listview { lines: $(printf "%s\n" "${templates[@]}" | wc -l); }"
     )
 
     [[ -z "${template}" ]] && main
@@ -138,7 +138,7 @@ new_note() {
 
     cat "${TEMPLATES}/${template}" > "${target_file}"
 
-    sed -i 's|{{id}}|${dated_file}|g' "${target_file}"
+    sed -i "s|{{id}}|${dated_file}|g" "${target_file}"
 
     cd ${DIR}
 
