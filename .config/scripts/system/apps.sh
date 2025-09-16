@@ -16,7 +16,7 @@ app=$(printf "%s\n" "${apps[@]}" | \
     rofi -dmenu \
     -p "App:" \
     -i \
-    -theme-str "window { width: 17%; }" \
+    -theme-str "window { width: 18%; }" \
     -theme-str "listview { lines: 4; columns: 2; }"
 )
 
