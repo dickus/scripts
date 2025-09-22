@@ -30,9 +30,9 @@ Searches for files within $HOME and opens them with `neovim`.
 
 ## notes
 ### obsidian.sh
+Open todo list.
 Open quicknote.
 Open notes by name or tag.
-Open drafts by name or tag.
 Create new notes using templates.
 Review notes.
 
@@ -42,6 +42,9 @@ All in one script using rofi.
 ## run
 ### resolve.sh
 Makes changes in `hyprland.conf` to make sure that popups don't disappear in Davinci Resolve.
+
+### zoom.sh
+Runs `Zoom` with null as a XDG_SESSION_TYPE to work properly with screen sharing.
 
 
 ## system
@@ -54,11 +57,14 @@ Launcher for most used apps.
 ### creation_time.sh
 Gets the time that this installation exists. Runs with `fastfetch` for a custom output.
 
+### dev.sh
+Creates a tmux session within a specific project directory.
+
+### garbage.sh
+Runs either `Yandex Browser` or `Zoom` with rofi.
+
 ### microphone.sh
 Un-/mutes default sound source (mic) and sends a notification with `dunst`. Runs with keybindings.
-
-### new_wallpaper.sh
-Adds a new wallpaper to $HOME/Pictures/wallpapers/ using url. Runs with keybinding, uses `rofi`.
 
 ### pkgs.sh
 Gets installed packages with pacman, aur and flatpak to show in `fastfetch`.
@@ -83,6 +89,9 @@ Script to download videos from YouTube using `yt-dlp`.
 ### check_time.sh
 Sets light or dark theme with `theme_schedule.sh` based on current time. Runs with `fcron` and `theme_changer.sh`.
 
+### clock.sh
+Sets eww clock position to one of 9 presets. Also sets clock position in `hyprlock` screen to one of 8 presets.
+
 ### theme_changer.sh
 Sets current light/dark theme in `theme_schedule.sh` to chosen ones. Runs with an alias.
 
@@ -91,6 +100,9 @@ Changes themes for some tools based on what you've set with `theme`. Runs with `
 
 
 ## wallpapers
+### new_wallpaper.sh
+Adds a new wallpaper to $HOME/Pictures/wallpapers/ using url. Runs with keybinding, uses `rofi`.
+
 ### wall_set.sh
 Sets received file as a wallpaper and background for hyprlock.
 
