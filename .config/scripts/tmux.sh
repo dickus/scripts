@@ -18,7 +18,7 @@ get_session_name() {
 }
 
 get_directory() {
-    dir_name="$(find ${HOME} -mindepth 2 -maxdepth 3 -type d | \
+    dir_name="$(find ${HOME} -maxdepth 3 -type d | \
         sed "s|${HOME}/||" | \
         rofi -dmenu \
         -p "Directory:" \
