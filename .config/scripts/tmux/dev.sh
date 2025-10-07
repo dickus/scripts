@@ -18,7 +18,7 @@ get_session_name() {
 }
 
 get_project() {
-    project_name="$(find "${PROJECTS}" -maxdepth 1 -type d | \
+    project_name="$(find "${PROJECTS}" -maxdepth 2 -type d | \
         sed "s|${HOME}/||" | \
         rofi -dmenu \
         -p "Project:" \

@@ -6,7 +6,7 @@ DAY=""
 NIGHT="󰖔"
 
 THEME_SCRIPT="${HOME}/.config/scripts/theme_change/theme_schedule.sh"
-STATUS="${HOME}/.config/scripts/system/daylight/daylight"
+STATUS="${HOME}/.config/scripts/daylight/daylight"
 
 get_current_theme() {
     grep -oP "${1}=\"\K[^\"]+" "${THEME_SCRIPT}" | tail -n 1
@@ -19,7 +19,7 @@ else
 fi
 
 if [[ "${1}" == "toggle" ]]; then
-    if [[ -z $(grep "dark" ${HOME}/.config/scripts/system/microphone.sh) ]]; then
+    if [[ -z $(grep "dark" ${HOME}/.config/scripts/audio/microphone.sh) ]]; then
         ${THEME_SCRIPT} dark
     else
         ${THEME_SCRIPT} light

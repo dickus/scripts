@@ -32,9 +32,9 @@ for file in "${!replacements[@]}"; do
 done
 
 scripts=(
-    system/microphone.sh
-    system/volume.sh
-    system/vpn.sh
+    audio/microphone.sh
+    audio/volume.sh
+    misc/vpn.sh
     wallpapers/new_wallpaper.sh
     yazi/isomount.sh
     yazi/isounmount.sh

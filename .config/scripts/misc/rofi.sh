@@ -14,9 +14,9 @@ script=$(echo -e "New wallpaper\nVPN\nYouTube download\nRandom" | \
 [[ -z "${script}" ]] && exit 0
 
 case "${script}" in
-    "New wallpaper") ${SCRIPTS_DIR}/system/new_wallpaper.sh ;;
-    "VPN") ${SCRIPTS_DIR}/system/vpn.sh ;;
-    "YouTube download") ${SCRIPTS_DIR}/system/yt.sh ;;
-    "Random") ${SCRIPTS_DIR}/random.sh ;;
+    "New wallpaper") ${SCRIPTS_DIR}/wallpapers/new_wallpaper.sh ;;
+    "VPN") ${SCRIPTS_DIR}/misc/vpn.sh ;;
+    "YouTube download") ${SCRIPTS_DIR}/misc/yt.sh ;;
+    "Random") ${SCRIPTS_DIR}/misc/random.sh ;;
 esac
 
