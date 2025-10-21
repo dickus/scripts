@@ -15,4 +15,5 @@ fi
 RANDOM_NUMBER=$((1 + RANDOM % ${number}))
 
 dunstify -t 5000 "${RANDOM_NUMBER}"
+wl-copy "${RANDOM_NUMBER}"
 
