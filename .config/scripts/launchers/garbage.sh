@@ -18,8 +18,8 @@ app=$(printf "%s\n" "${garbage[@]}" | \
 
 case "${app}" in
     "Yandex Browser")
-        ru.yandex.Browser ;;
+        ru.yandex.Browser & ;;
     "Zoom")
-        ${HOME}/.config/scripts/run/zoom.sh ;;
+        ${HOME}/.config/scripts/run/zoom.sh & ;;
 esac
 
