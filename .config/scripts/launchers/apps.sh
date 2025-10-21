@@ -24,17 +24,17 @@ app=$(printf "%s\n" "${apps[@]}" | \
 
 case "${app}" in
     "qBittorrent")
-        org.qbittorrent.qBittorrent ;;
+        org.qbittorrent.qBittorrent & ;;
     "Communication")
         org.telegram.desktop &
 
         dev.vencord.Vesktop & ;;
     "GIMP")
-        org.gimp.GIMP ;;
+        org.gimp.GIMP & ;;
     "DaVinci Resolve")
-        ${HOME}/.config/scripts/run/resolve.sh ;;
+        ${HOME}/.config/scripts/run/resolve.sh & ;;
     "Audacity")
-        ${HOME}/.config/waybar/runners/audacity.sh ;;
+        ${HOME}/.config/waybar/runners/audacity.sh & ;;
     "Steam")
         mangohud steam -console ;;
     "World of Warcraft")
@@ -42,8 +42,8 @@ case "${app}" in
 
         wowup-cf
 
-        env "${HOME}/PortProton/data/scripts/start.sh" "${HOME}/PortProton/data/prefixes/BATTLE_NET/drive_c/Program Files (x86)/Battle.net/Battle.net.exe" ;;
+        env "${HOME}/PortProton/data/scripts/start.sh" "${HOME}/PortProton/data/prefixes/BATTLE_NET/drive_c/Program Files (x86)/Battle.net/Battle.net.exe" & ;;
     "Minecraft")
-        org.prismlauncher.PrismLauncher ;;
+        org.prismlauncher.PrismLauncher & ;;
 esac
 
