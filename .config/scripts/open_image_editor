@@ -1,0 +1,63 @@
+#!/usr/bin/env zsh
+
+show_error() {
+    message="${1}"
+
+    notify-send -t 3000 -u critical "Error" "${message}"
+}
+
+show_success() {
+    message="${1}"
+
+    notify-send -t 2000 "Success" "${message}"
+}
+
+open_image_editor() {
+    local file="${1}"
+    local mimetype=$(file --mime-type -b "${file}")
+
+    if [[ "${mimetype}" =~ ^image/svg\+xml ]] || [[ "${mimetype}" =~ ^image/svg ]]; then
+        vector_image "${file}"
+    elif [[ "${mimetype}" =~ ^image/ ]]; then
+        raster_image "${file}"
+    fi
+}
+
+raster_image() {
+    local file="${1}"
+
+    if command -v gimp &> /dev/null; then
+        setsid -f gimp "${file}" &> /dev/null &
+    elif command -v org.gimp.GIMP &> /dev/null; then
+        setsid -f org.gimp.GIMP "${file}" &> /dev/null &
+    elif command -v krita &> /dev/null; then
+        setsid -f krita "${file}" &> /dev/null &
+    elif command -v org.kde.Krita &> /dev/null; then
+        setsid -f org.kde.Krita "${file}" &> /dev/null &
+    else
+        show_error "No GIMP or Krita installed"
+
+        return 1
+    fi
+}
+
+vector_image() {
+    local file="${1}"
+
+    if command -v inkscape &> /dev/null; then
+        setsid -f inkscape "${file}" &> /dev/null &
+    elif command -v org.inkscape.Inkscape &> /dev/null; then
+        setsid -f org.inkscape.Inkscape "${file}" &> /dev/null &
+    elif command -v krita &> /dev/null; then
+        setsid -f krita "${file}" &> /dev/null &
+    elif command -v org.kde.Krita &> /dev/null; then
+        setsid -f org.kde.Krita "${file}" &> /dev/null &
+    else
+        show_error "No Krita or Inkscape installed"
+
+        return 1
+    fi
+}
+
+open_image_editor "${1}"
+
