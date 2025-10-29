@@ -5,8 +5,8 @@ PROJECTS="${HOME}/projects"
 
 get_session_name() {
     session_name="$(tmux ls | \
-        sed 's|:.*||' | \
-        rofi -dmenu \
+    sed 's|:.*||' | \
+    rofi -dmenu \
         -p "Session name:" \
         -theme-str "window { width: 15%; }" \
         -theme-str "listview { lines: 5; }"
@@ -19,8 +19,8 @@ get_session_name() {
 
 get_project() {
     project_name="$(find "${PROJECTS}" -maxdepth 2 -type d | \
-        sed "s|${HOME}/||" | \
-        rofi -dmenu \
+    sed "s|${HOME}/||" | \
+    rofi -dmenu \
         -p "Project:" \
         -theme-str "window { width: 30%; }" \
         -theme-str "listview { lines: 10; columns: 2; }"

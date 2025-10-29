@@ -9,20 +9,24 @@ TERMINAL="kitty"
 open_note_name() {
     mapfile -t notes < <(find "${DIR}" -type f -printf "%P\n")
 
-    local note=$(printf "%s\n" "${notes[@]}" | \
+    local note=$(
+        printf "%s\n" "${notes[@]}" | \
         sed 's|^[^_]*_||; s|.md||' | \
         sort | \
         rofi -dmenu \
-        -p "Note:" \
-        -i \
-        -theme-str "window { width: 25%; }" \
-        -theme-str "listview { lines: 10; }"
+            -p "Note:" \
+            -i \
+            -theme-str "window { width: 25%; }" \
+            -theme-str "listview { lines: 10; }"
     )
 
     [[ -z "${note}" ]] && open_note
 
     for original_note in "${notes[@]}"; do
-        local stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||; s|.md||')
+        local stripped_note=$(
+            echo "${original_note}" | \
+            sed 's|^[^_]*_||; s|.md||'
+        )
 
         if [[ "${stripped_note}" == "${note}" ]]; then
             cd ${DIR}
@@ -36,42 +40,52 @@ open_note_name() {
 
 open_note_tag() {
     if [[ -d "${DIR}" ]]; then
-        mapfile -t tags < <(realpath "${DIR}"/* | \
-        xargs -r grep -r "\- #" | \
-        sed 's|.*#||' | \
-        sort | \
-        uniq)
+        mapfile -t tags < <(
+            realpath "${DIR}"/* | \
+            xargs -r grep -r "\- #" | \
+            sed 's|.*#||' | \
+            sort | \
+            uniq
+        )
     fi
 
-    local tag=$(printf "%s\n" "${tags[@]}" | rofi -dmenu \
-        -p "Tag:" \
-        -i \
-        -theme-str "window { width: 25%; }" \
-        -theme-str "listview { lines: 10; }"
+    local tag=$(
+        printf "%s\n" "${tags[@]}" | \
+        rofi -dmenu \
+            -p "Tag:" \
+            -i \
+            -theme-str "window { width: 25%; }" \
+            -theme-str "listview { lines: 10; }"
     )
 
     [[ -z "${tag}" ]] && exit 0
     if [[ -d "${DIR}" ]]; then
-        mapfile -t notes < <(realpath "${DIR}"/* | \
-        xargs -r grep -r "#${tag}" | \
-        sed 's|:.*||' | \
-        sort)
+        mapfile -t notes < <(
+            realpath "${DIR}"/* | \
+            xargs -r grep -r "#${tag}" | \
+            sed 's|:.*||' | \
+            sort
+        )
     fi
 
-    local note=$(printf "%s\n" "${notes[@]}" | \
+    local note=$(
+        printf "%s\n" "${notes[@]}" | \
         sed 's|^[^_]*_||; s|.md||' | \
         sort | \
         rofi -dmenu \
-        -p "Note:" \
-        -i \
-        -theme-str "window { width: 20%; }" \
-        -theme-str "listview { lines: 10; }"
+            -p "Note:" \
+            -i \
+            -theme-str "window { width: 20%; }" \
+            -theme-str "listview { lines: 10; }"
     )
 
     [[ -z "${note}" ]] && open_note
 
     for original_note in "${notes[@]}"; do
-        local stripped_note=$(echo "${original_note}" | sed 's|^[^_]*_||; s|.md||')
+        local stripped_note=$(
+            echo "${original_note}" | \
+            sed 's|^[^_]*_||; s|.md||'
+        )
 
         if [[ "${stripped_note}" == "${note}" ]]; then
             cd ${DIR}
@@ -84,11 +98,13 @@ open_note_tag() {
 }
 
 open_note() {
-    local open=$(echo -e "By name\nBy tag" | rofi -dmenu \
-        -p "Open note:" \
-        -i \
-        -theme-str "window { width: 7%; }" \
-        -theme-str "listview { lines: 2; }"
+    local open=$(
+        echo -e "By name\nBy tag" | \
+        rofi -dmenu \
+            -p "Open note:" \
+            -i \
+            -theme-str "window { width: 7%; }" \
+            -theme-str "listview { lines: 2; }"
     )
 
     [[ -z "${open}" ]] && main
@@ -103,36 +119,43 @@ open_note() {
 new_note() {
     mapfile -t templates < <(find "${TEMPLATES}" -maxdepth 1 -type f -printf "%f\n")
 
-    local template=$(printf "%s\n" "${templates[@]}" | \
+    local template=$(
+        printf "%s\n" "${templates[@]}" | \
         sort | \
         rofi -dmenu \
-        -p "Template:" \
-        -i \
-        -theme-str "window { width: 10%; }" \
-        -theme-str "listview { lines: $(printf "%s\n" "${templates[@]}" | wc -l); }"
+            -p "Template:" \
+            -i \
+            -theme-str "window { width: 10%; }" \
+            -theme-str "listview { lines: $(printf "%s\n" "${templates[@]}" | wc -l); }"
     )
 
     [[ -z "${template}" ]] && main
 
     local notes=()
     if [[ -d "${DRAFTS}" ]] && [[ -d "${NOTES}" ]]; then
-        mapfile -t drafts < <(find "${NOTES}" "${DRAFTS}" -maxdepth 1 -type f -printf "%f\n" | sed -e 's|^[^_]*_||; s|.md||')
+        mapfile -t drafts < <(
+            find "${NOTES}" "${DRAFTS}" -maxdepth 1 -type f -printf "%f\n" | \
+            sed -e 's|^[^_]*_||; s|.md||'
+        )
     fi
 
-    local filename=$(printf "%s\n" "${drafts[@]}" | \
+    local filename=$(
+        printf "%s\n" "${drafts[@]}" | \
         sort | \
         rofi -dmenu \
-        -p "Name:" \
-        -i \
-        -theme-str "window { width: 30%; }" \
-        -theme-str "listview { lines: 10; }"
+            -p "Name:" \
+            -i \
+            -theme-str "window { width: 30%; }" \
+            -theme-str "listview { lines: 10; }"
     )
 
     [[ -z "${filename}" ]] && new_note
 
     local filename="${filename%.*}"
-
-    local filename=$(echo "${filename}" | tr ' ' '-')
+    local filename=$(
+        echo "${filename}" | \
+        tr ' ' '-'
+    )
     local dated_file="$(date "+%Y-%m-%d-%H%M%S")_${filename}"
     local target_file="${DRAFTS}/${dated_file}.md"
 
@@ -156,20 +179,29 @@ main() {
         "Review notes"
     )
 
-    action=$(printf "%s\n" "${actions[@]}" | rofi -dmenu \
-        -p "Notes:" \
-        -i \
-        -theme-str "window { width: 10%; }" \
-        -theme-str "listview { lines: $(printf "%s\n" "${actions[@]}" | wc -l); }"
+    action=$(
+        printf "%s\n" "${actions[@]}" | \
+        rofi -dmenu \
+            -p "Notes:" \
+            -i \
+            -theme-str "window { width: 10%; }" \
+            -theme-str "listview { lines: $( \
+                printf "%s\n" "${actions[@]}" | \
+                wc -l
+            ); }"
     )
 
     [[ -z "${action}" ]] && exit 0
 
     case "${action}" in
-        "TODO") ${TERMINAL} -T "todos" -e nvim ${HOME}/.docs/todos.md ;;
-        "Quick note") ${TERMINAL} -T "quicknote" -e nvim ;;
-        "Open note") open_note ;;
-        "New note") new_note ;;
+        "TODO")
+            ${TERMINAL} -T "todos" -e nvim ${HOME}/.docs/todos.md ;;
+        "Quick note") 
+            ${TERMINAL} -T "quicknote" -e nvim ;;
+        "Open note")
+            open_note ;;
+        "New note")
+            new_note ;;
         "Review notes")
             cd ${DIR} && ${TERMINAL} -e nvim ${DRAFTS}/*.md
 

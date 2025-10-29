@@ -57,26 +57,32 @@ if [[ "${TERMINAL}" == "kitty" ]]; then
     if [[ "${DIR_MODE}" == "light" ]]; then
         kitty +kitten themes --reload-in=all "${LIGHT_THEME^}"
 
-        mapfile -t files < <(find ${WALL_DIR}/${LIGHT_THEME} -type f | \
+        mapfile -t files < <(
+            find ${WALL_DIR}/${LIGHT_THEME} -type f | \
             sort)
 
-        files_count=$(printf "%s\n" "${files[@]}" | \
+        files_count=$(
+            printf "%s\n" "${files[@]}" | \
             wc -l)
 
         file=$((1 + RANDOM % ${files_count}))
     else
         kitty +kitten themes --reload-in=all "${DARK_THEME^}"
 
-        mapfile -t files < <(find ${WALL_DIR}/${DARK_THEME} -type f | \
+        mapfile -t files < <(
+            find ${WALL_DIR}/${DARK_THEME} -type f | \
             sort)
 
-        files_count=$(printf "%s\n" "${files[@]}" | \
+        files_count=$(
+            printf "%s\n" "${files[@]}" | \
             wc -l)
 
         file=$((1 + RANDOM % ${files_count}))
     fi
 fi
 
-${HOME}/.config/scripts/wallpapers/wall_set.sh "$(printf "%s\n" "${files[@]}" | \
-    sed -n "${file}p")"
+${HOME}/.config/scripts/wallpapers/wall_set.sh "$( \
+    printf "%s\n" "${files[@]}" | \
+    sed -n "${file}p"
+)"
 

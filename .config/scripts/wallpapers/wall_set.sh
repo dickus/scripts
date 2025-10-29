@@ -1,11 +1,21 @@
 #!/usr/bin/env bash
 
-WALL_PATH=$(echo "${1}" | sed 's|.*/Pictures/||')
-WALL=$(echo "${WALL_PATH}" | sed 's|.*/||; s|_.*||')
+WALL_PATH=$(
+    echo "${1}" | \
+    sed 's|.*/Pictures/||'
+)
+WALL=$(
+    echo "${WALL_PATH}" | \
+    sed 's|.*/||; s|_.*||'
+)
 
 eww_config="${HOME}/.config/eww/eww.yuck"
 eww_cs="${HOME}/.config/eww/eww.scss"
-current_theme="${HOME}/.config/hypr/lock_themes/$(cat ${HOME}/.config/hypr/hyprlock.conf | head -1 | sed 's|.*/||')"
+current_theme="${HOME}/.config/hypr/lock_themes/$( 
+    cat ${HOME}/.config/hypr/hyprlock.conf | \
+    head -1 | \
+    sed 's|.*/||'
+)"
 
 echo "${current_theme}"
 

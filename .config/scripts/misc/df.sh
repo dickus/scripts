@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-SDC=$(lsblk | grep "sdc")
+SDC=$(
+    lsblk | \
+    grep "sdc"
+)
 
 if [[ -z "${SDC}" ]]; then
     df -h / /home

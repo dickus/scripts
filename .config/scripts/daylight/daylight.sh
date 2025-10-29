@@ -1,22 +1,14 @@
 #!/usr/bin/env bash
 
 TEMP=$(hyprctl hyprsunset temperature)
-
-DAY=""
-NIGHT="󰖔"
-
-THEME_SCRIPT="${HOME}/.config/scripts/theme_change/theme_schedule.sh"
-STATUS="${HOME}/.config/scripts/daylight/daylight"
+BASEDIR="${HOME}/.config/scripts"
+THEME_SCRIPT="${BASEDIR}/theme_change/theme_schedule.sh"
+STATUS="${BASEDIR}/daylight/daylight"
 
 get_current_theme() {
-    grep -oP "${1}=\"\K[^\"]+" "${THEME_SCRIPT}" | tail -n 1
+    grep -oP "${1}=\"\K[^\"]+" "${THEME_SCRIPT}" | \
+    tail -1
 }
-
-if [[ $(grep "6000" ${STATUS}) ]]; then
-    printf '{"text": "%s"}' "${DAY}"
-else
-    printf '{"text": "%s", "class": "on"}' "${NIGHT}"
-fi
 
 if [[ "${1}" == "toggle" ]]; then
     if [[ -z $(grep "dark" ${HOME}/.config/scripts/audio/microphone.sh) ]]; then
@@ -27,14 +19,16 @@ if [[ "${1}" == "toggle" ]]; then
 fi
 
 if [[ "${1}" == "light" ]]; then
-    if [[ -z $(grep "6000" ${STATUS}) ]]; then
+    if [[ -z $(grep "Cold" ${STATUS}) ]]; then
         hyprctl hyprsunset identity
 
-        echo "6000" > ${STATUS}
+        echo "Cold" > ${STATUS}
     else
         hyprctl hyprsunset temperature 4500
 
-        echo "4500" > ${STATUS}
+        echo "Warm" > ${STATUS}
     fi
+
+    notify-send -t 2000 "Screen color" "$(cat ${STATUS})"
 fi
 

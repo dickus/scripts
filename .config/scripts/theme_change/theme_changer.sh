@@ -6,7 +6,8 @@ LIGHT_DIR="${BASE_DIR}/light"
 DARK_DIR="${BASE_DIR}/dark"
 
 get_current_theme() {
-    grep -oP "${1}=\"\K[^\"]+" "${THEME_SCRIPT}" | tail -n 1
+    grep -oP "${1}=\"\K[^\"]+" "${THEME_SCRIPT}" | \
+    tail -1
 }
 
 CURRENT_LIGHT=$(get_current_theme "LIGHT_THEME")
@@ -20,13 +21,17 @@ if [[ -d "${LIGHT_DIR}" ]]; then
     done < <(find "${LIGHT_DIR}" -type f -printf "%f\n")
 fi
 
-LIGHT_THEME=$(printf "%s\n" "${LIGHT_THEMES[@]}" | \
+LIGHT_THEME=$(
+    printf "%s\n" "${LIGHT_THEMES[@]}" | \
     sort | \
     rofi -dmenu \
-    -p "Light:" \
-    -i \
-    -theme-str "window { width: 10%; }" \
-    -theme-str "listview { lines: $(printf "%s\n" "${LIGHT_THEMES[@]}" | wc -l); }"
+        -p "Light:" \
+        -i \
+        -theme-str "window { width: 10%; }" \
+        -theme-str "listview { lines: $( \
+            printf "%s\n" "${LIGHT_THEMES[@]}" | \
+            wc -l
+        ); }"
 )
 
 DARK_THEMES=()
@@ -36,13 +41,17 @@ if [[ -d "${DARK_DIR}" ]]; then
     done < <(find "${DARK_DIR}" -type f -printf "%f\n")
 fi
 
-DARK_THEME=$(printf "%s\n" "${DARK_THEMES[@]}" | \
+DARK_THEME=$(
+    printf "%s\n" "${DARK_THEMES[@]}" | \
     sort | \
     rofi -dmenu \
-    -p "Dark:" \
-    -i \
-    -theme-str "window { width: 10%; }" \
-    -theme-str "listview { lines: $(printf "%s\n" "${DARK_THEMES[@]}" | wc -l); }"
+        -p "Dark:" \
+        -i \
+        -theme-str "window { width: 10%; }" \
+        -theme-str "listview { lines: $( \
+            printf "%s\n" "${DARK_THEMES[@]}" | \
+            wc -l
+        ); }"
 )
 
 update_theme() {
@@ -53,7 +62,7 @@ update_theme() {
     if [[ "${current_value}" != "${new_value}" ]]; then
         sed -i "s|^\(${var_name}=\).*|\1\"${new_value}\"|" "${THEME_SCRIPT}"
 
-        dunstify -t 2000 "Theme changed to ${new_value}"
+        notify-send -t 2000 "Theme changed to ${new_value}"
     fi
 }
 

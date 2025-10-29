@@ -5,13 +5,14 @@ garbage=(
     "Zoom"
 )
 
-app=$(printf "%s\n" "${garbage[@]}" | \
+app=$(
+    printf "%s\n" "${garbage[@]}" | \
     sort | \
     rofi -dmenu \
-    -p "Apps:" \
-    -i \
-    -theme-str "window { width: 10%; }" \
-    -theme-str "listview { lines: 2; }"
+        -p "Apps:" \
+        -i \
+        -theme-str "window { width: 10%; }" \
+        -theme-str "listview { lines: 2; }"
 )
 
 [[ -z "${app}" ]] && exit 0

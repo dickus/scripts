@@ -11,13 +11,14 @@ apps=(
     "Minecraft"
 )
 
-app=$(printf "%s\n" "${apps[@]}" | \
+app=$(
+    printf "%s\n" "${apps[@]}" | \
     sort | \
     rofi -dmenu \
-    -p "App:" \
-    -i \
-    -theme-str "window { width: 18%; }" \
-    -theme-str "listview { lines: 4; columns: 2; }"
+        -p "App:" \
+        -i \
+        -theme-str "window { width: 18%; }" \
+        -theme-str "listview { lines: 4; columns: 2; }"
 )
 
 [[ -z "${app}" ]] && exit 0
