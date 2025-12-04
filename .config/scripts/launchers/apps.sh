@@ -37,7 +37,7 @@ case "${app}" in
     "Audacity")
         ${HOME}/.config/waybar/runners/audacity.sh & ;;
     "Steam")
-        mangohud steam -console ;;
+        mangohud steam -dev -console ;;
     "World of Warcraft")
         env LUTRIS_SKIP_INIT=1 lutris lutris:rungameid/1 &
 
