@@ -1,7 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 TERMINAL="kitty"
 LAYOUTS="${HOME}/.config/tmux/layouts"
+PROJECTS="${HOME}/projects"
 
 get_session_name() {
     session_name="$( 
@@ -20,15 +21,15 @@ get_session_name() {
 
 get_directory() {
     dir_name="$( 
-        find ${HOME} -maxdepth 3 -type d | \
-        sed "s|${HOME}/||" | \
+        find ${PROJECTS} -mindepth 1 -maxdepth 2 -type d | \
+        sed "s|${PROJECTS}/||" | \
         rofi -dmenu \
             -p "Directory:" \
             -theme-str "window { width: 30%; }" \
             -theme-str "listview { lines: 10; columns: 2; }"
     )"
 
-    [[ -z "${dir_name}" ]] && dir_name="${HOME}/"
+    [[ -z "${dir_name}" ]] && dir_name="${PROJECTS}/default" || dir_name="${PROJECTS}/${dir_name}"
 
     create_session
 }
