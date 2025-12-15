@@ -4,7 +4,7 @@ MODE=""
 TERMINAL="kitty"
 
 pakmans=(
-    "paru"
+    "yay"
     "flatpak"
 )
 
@@ -49,14 +49,14 @@ install() {
     choose_package_manager
 
     case "${pakman}" in
-        "paru")
+        "yay")
             ${TERMINAL} -T "pakman" -e bash -c '
             mapfile -t pkgs < <(
-                paru -Slq |
-                fzf --multi --preview "paru -Sii --needed {}" --preview-window=down:75%:wrap
+                yay -Slq |
+                fzf --multi --preview "yay -Sii --needed {}" --preview-window=down:75%:wrap
             )
             if (( ${#pkgs[@]} )); then
-                paru -S "${pkgs[@]}"
+                yay -S "${pkgs[@]}"
                 read -r -p "Press Enter to exit"
             fi
             ' ;;
@@ -80,14 +80,14 @@ remove() {
     choose_package_manager
 
     case "${pakman}" in
-        "paru")
+        "yay")
             ${TERMINAL} -T "pakman" -e bash -c '
             mapfile -t pkgs < <(
-                paru -Qq |
-                fzf --multi --preview "paru -Sii {}" --preview-window=down:75%:wrap
+                yay -Qq |
+                fzf --multi --preview "yay -Sii {}" --preview-window=down:75%:wrap
             )
             if (( ${#pkgs[@]} )); then
-                paru -Rns "${pkgs[@]}"
+                yay -Rns "${pkgs[@]}"
                 read -r -p "Press Enter to exit"
             fi
             ' ;;
@@ -106,7 +106,7 @@ remove() {
 }
 
 update() {
-    ${TERMINAL} -T "pakman" -e bash -c "paru -Syu; flatpak update"
+    ${TERMINAL} -T "pakman" -e bash -c "yay -Syu; flatpak update"
 }
 
 choose_action
