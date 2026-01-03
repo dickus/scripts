@@ -173,6 +173,7 @@ new_note() {
 main() {
     actions=(
         "TODO"
+        "Notes"
         "Quick note"
         "Open note"
         "New note"
@@ -195,7 +196,11 @@ main() {
 
     case "${action}" in
         "TODO")
-            ${TERMINAL} -T "todos" -e nvim ${HOME}/.docs/todos.md ;;
+            ${TERMINAL} -T "todos" -e nvim "${DIR}"/todos.md ;;
+        "Notes")
+            cd "${DIR}"
+
+            ${TERMINAL} -e nvim ;;
         "Quick note") 
             ${TERMINAL} -T "quicknote" -e nvim ;;
         "Open note")
